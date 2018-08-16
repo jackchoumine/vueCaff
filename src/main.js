@@ -8,7 +8,12 @@ import router from './router'
 // 引入全局指令
 import './directives'
 import './components'
-
+// 引入 store
+import store from './store'
+import VueSweetalert2 from './plugins/vue-sweetalert2'
+Vue.use(VueSweetalert2)
+import Message from './plugins/message'
+Vue.use(Message)
 Vue.config.productionTip = false
 
 // eslint 配置，允许 new 一个实例后不赋值，我们没有使用 eslint，如果有，则下一行注释不可缺少
@@ -16,6 +21,12 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
-  components: { App },
-  template: '<App/>'
+  store, //注入store
+  components: {
+    App
+  },
+  template: '<App/>',
+  created() {
+    console.log(this.$options.el)
+  }
 })

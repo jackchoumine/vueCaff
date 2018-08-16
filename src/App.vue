@@ -5,38 +5,6 @@
       <router-view/>
     </div>
     <the-footer></the-footer>
-    <!--  <div class="jumbotron">
-    </div> -->
-
-    <!--  <div class="container">
-      <div class="jumbotron">
-        <div class="container">
-          <h1>Welcome from Bootstrap</h1>
-          <p>This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-          <p>
-            <a class="btn btn-primary btn-lg" href="http://www.bootcss.com/" role="button" target="_blank">Learn more
-              <span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span>
-            </a>
-          </p>
-        </div>
-      </div>
-      <div class="jumbotron">
-        <div class="container">
-          <h1>font awesome</h1>
-          <p>i标签 和 class 引入字体图标</p>
-          <p>
-            <i class="fa fa-camera"> </i>
-            <i class="fa fa-camera fa-2x"> </i>
-            <i class="fa fa-camera fa-3x"> </i>
-            <i class="fa fa-camera fa-4x"> </i>
-            <i class="fa fa-camera fa-5x"> </i>
-            <i class="fa fa-camera fa-spin"> </i>
-            <i class="fa fa-spinner fa-spin"></i>
-          </p>
-        </div>
-      </div>
-    </div> 
-     -->
   </div>
 </template>
 
@@ -75,8 +43,24 @@ $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
 /*  在 import 字体前，需要确定 $fa-font-path 的指向 */
 $fa-font-path: '~font-awesome/fonts/';
 @import '~font-awesome/scss/font-awesome';
+// markdown 编辑器的样式
+@import 'simplemde/dist/simplemde.min.css';
+//markdown 代码高亮
+@import 'highlight.js/styles/paraiso-dark.css';
+/* div .editor-preview-side pre {
+  background: rgb(241, 240, 240);
+}
+div .editor-preview-side pre code[class*='lang-'] {
+  color: rgb(206, 202, 202);
+} */
 
+html>body{
+  background-color:#f0f3f5;
+}
 body > .container {
   margin-top: 15px;
 }
+
+div .editor-preview-side pre { background: #eee;}
+div .editor-preview-side pre code[class*="lang-"] { color: rgb(247, 247, 247);}
 </style>
