@@ -72,5 +72,18 @@ const routes = [{
       auth: true
     }
   },
+  // 显示文章
+  {
+    path: '/articles/:articleId/content',
+    name: 'Content',
+    component: () => import('@/views/articles/Content.vue')
+  },
+   // 编辑文章
+   {
+    path: '/articles/:articleId/edit',
+    name: 'Edit',
+    component: () => import('@/views/articles/Create'),
+    meta: { auth: true }
+  },
 ]
 export default routes

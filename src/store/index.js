@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import ls from '../utils/localStorage'
 import router from '../router'
+// 引入所有 actions.js 的所有导出
+import * as moreActions from "./actions";
 
 Vue.use(Vuex)
 
@@ -27,6 +29,7 @@ const mutations = {
     state.auth = auth;
     ls.setItem('auth', auth);
   },
+  // 更改所有文咋请的事件类型
   UPDATE_ARTICLES(state, articles) {
     state.articles = articles;
     ls.setItem('articles', articles)
@@ -77,11 +80,29 @@ const actions = {
     }
     // 更新个人信息
     commit('UPDATE_USER', user)
+  },
+  // 对象展开运算符混入 moreActions
+  // const actions = Object.assign(actions, moreActions)
+  ...moreActions,
+}
+const getters = {
+  // 第一个参数是 state ,因为要传递 id,这返回一个函数
+  getArticleById: (state) => (id) => {
+    // 从仓库中获取所有文章
+    let articles = state.articles
+    // 所有文章是一个数组
+    if (Array.isArray(articles)) {
+      let result = articles.filter(article => parseInt(id) == parseInt(article.articleId))
+      return result.length ? result[0] : null
+    } else {
+      return null;
+    }
   }
 }
 //创建新的仓库实例
 const store = new Vuex.Store({
   state, //共享的状态，不能直接更改，但是可访问
+  getters,
   mutations, //更改状态的方法
   actions, //类似 mutations 
 })

@@ -13,6 +13,7 @@ import store from './store'
 import VueSweetalert2 from './plugins/vue-sweetalert2'
 Vue.use(VueSweetalert2)
 import Message from './plugins/message'
+import './filters'
 Vue.use(Message)
 Vue.config.productionTip = false
 

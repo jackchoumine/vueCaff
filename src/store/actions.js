@@ -1,7 +1,8 @@
+// 文章状态管理，将较多的逻辑代码分在文件里，便于管理
 // 引入路由作页面跳转用
 import router from '../router'
 
-const post = ({
+export const post = ({
   commit,
   state
 }, {
@@ -22,12 +23,13 @@ const post = ({
     } = article
     const date = new Date()
     // 如果没传 articleId，表示新建文章
-    if (articleId === undefined) {
+    if (undefined === articleId) {
+      console.log('新增一篇文章！')
       // 最后一篇文章
       const lastArticle = articles[articles.length - 1]
-
+      // 数组里有文章
       if (lastArticle) {
-        // 在最后一篇文章的 id 上 加一
+        // 在最后一篇文章的 id 上加 1
         articleId = parseInt(lastArticle.articleId) + 1
       } else {
         articleId = articles.length + 1
@@ -41,19 +43,46 @@ const post = ({
         content,
         date
       })
+      commit('UPDATE_ARTICLES', articles)
+      router.push({
+        name: 'Content',
+        params: {
+          articleId,
+          showMsg: true
+        }
+      })
+    } else {
+      // 编辑文章
+      for (let article of articles) {
+        if (parseInt(article.articleId) === pareseInt(articleId)) {
+          article.title = title
+          article.content = content
+          break
+        }
+      }
+ /*      commit('UPDATE_ARTICLES', articles)
+      router.push({
+        name: 'Content',
+        params: {
+          articleId,
+          showMsg: true
+        }
+      }) */
     }
-    // 更新文章
+  } else {
+    for (let article of articles) {
+      if (parseInt(article.articleId) === parseInt(articleId)) {
+        articles.splice(articles.indexOf(article), 1)
+        break
+      }
+    }
     commit('UPDATE_ARTICLES', articles)
-    // 跳转到首页 
-    //showMsg 用来指示目标页面显示一个提示
     router.push({
       name: 'Home',
       params: {
-        articleId,
         showMsg: true
       }
     })
   }
 }
-
-export default post
+// export default post 和上面有何不同？？

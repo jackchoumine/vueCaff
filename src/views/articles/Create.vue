@@ -1,28 +1,28 @@
 <!-- 创作页面 -->
 <template>
-    <div class="blog-container">
-        <div class="blog-pages">
-            <div class="col-md-12 panel">
-                <div class="panel-body">
-                    <h2 class="text-center">创作文章</h2>
-                    <hr>
-                    <div data-validator-form>
-                        <div class="form-group">
-                            <input v-model.trim="title" @input="saveTitle" v-validator.required="{ title: '标题' }" type="text" class="form-control" placeholder="请填写标题">
-                        </div>
-                        <div class="form-group">
-                            <!--  <textarea v-validator.required="{ title: '内容' }" class="form-control" placeholder="请使用 Markdown 格式书写 ;-)，代码片段黏贴时请注意使用高亮语法。"></textarea>-->
-                            <textarea id="editor"></textarea>
-                        </div>
-                        <br>
-                        <div class="form-group">
-                            <button class="btn btn-primary" type="submit" @click="post">发 布</button>
-                        </div>
-                    </div>
-                </div>
+  <div class="blog-container">
+    <div class="blog-pages">
+      <div class="col-md-12 panel">
+        <div class="panel-body">
+          <h2 class="text-center">{{articleId?'编辑文章':'创作文章'}}</h2>
+          <hr>
+          <div data-validator-form>
+            <div class="form-group">
+              <input v-model.trim="title" @input="saveTitle" v-validator.required="{ title: '标题' }" type="text" class="form-control" placeholder="请填写标题">
             </div>
+            <div class="form-group">
+              <!--  <textarea v-validator.required="{ title: '内容' }" class="form-control" placeholder="请使用 Markdown 格式书写 ;-)，代码片段黏贴时请注意使用高亮语法。"></textarea>-->
+              <textarea id="editor"></textarea>
+            </div>
+            <br>
+            <div class="form-group">
+              <button class="btn btn-primary" type="submit" @click="post">发 布</button>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -41,7 +41,29 @@ export default {
   data() {
     return {
       title: '',
-      content: ''
+      content: '',
+      articleId: undefined
+    }
+  },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      //  确认渲染组件的对应路由时，设置 articleId
+      vm.setArticleId(vm.$route.params.articleId)
+    })
+  },
+  // 在离开组件的对应路由前
+  beforeRouteLeave(to, from, next) {
+    // 清空自动保存的文章数据
+    this.clearData()
+    next()
+  },
+  watch: {
+    // 监听路由参数变化
+    // 在两个路由都渲染相同组件是监听 '$route'
+    // 因为 Vue 会复用组件实例，导致组件内的部分钩子函数不再被调用
+    '$route'(to) {
+      this.clearData()
+      this.setArticleId(to.params.articleId)
     }
   },
   mounted() {
@@ -51,14 +73,12 @@ export default {
       placeholder:
         '请使用 Markdown 格式书写 ;-)，代码片段黏贴时请注意使用高亮语法。代码高亮有点异常',
       spellChecker: false,
-      //   不自动下载 FontAwesome
       autoDownloadFontAwesome: false,
-      //   自动保存，uniqueId 是是区别于其他站点的标识
       autosave: {
         enabled: true,
         uniqueId: 'content'
       },
-      //   代码高亮
+      // 代码高亮
       renderingConfig: {
         codeSyntaxHighlighting: true
       }
@@ -77,14 +97,25 @@ export default {
     saveTitle() {
       ls.setItem('smde_title', this.title)
     },
-    fillContent() {
+    fillContent(articleId) {
       const simplemde = this.simplemde
-      const title = ls.getItem('smde_title')
+      const smde_title = ls.getItem('smde_title')
       // 如果 localStorage 有标题数据，使用它作为文章标题
-      if (title !== null) {
-        this.title = title
+      /*     if (articleId !== undefined) {
+        const article = this.$store.getters.getArticleById(articleId)
+        if (article) {
+          const { title, content } = article
+          this.title = smde_title || title
+          this.content = simplemde.value() || content
+          simplemde.value(this.content)
+        }
+      } else {
+        this.title = smde_title
+        this.content = simplemde.value()
+      } */
+      if (null !== smde_title) {
+        this.title = smde_title
       }
-      //   编辑器的内容作为文章内容
       this.content = simplemde.value()
     },
     // 发布
@@ -97,8 +128,8 @@ export default {
           title,
           content
         }
-
-        console.log(article)
+        // 分发 post 事件
+        this.$store.dispatch('post', { article })
         this.clearData()
       }
     },
@@ -108,6 +139,15 @@ export default {
       this.simplemde.value('')
       //清除编辑器自动保存的内容
       this.simplemde.clearAutosavedValue()
+    },
+    setArticleId(articleId) {
+      const localArticleId = ls.getItem('articleId')
+      if (articleId !== undefined && !(articleId === localArticleId)) {
+        this.clearData()
+      }
+      this.articleId = articleId
+      this.fillContent(articleId)
+      ls.setItem('articleId', articleId)
     }
   }
 }
