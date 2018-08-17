@@ -61,7 +61,7 @@ export default {
     // 监听路由参数变化
     // 在两个路由都渲染相同组件是监听 '$route'
     // 因为 Vue 会复用组件实例，导致组件内的部分钩子函数不再被调用
-    '$route'(to) {
+    $route(to) {
       this.clearData()
       this.setArticleId(to.params.articleId)
     }
@@ -91,7 +91,7 @@ export default {
     // 将 simlemde 添加到当前实例，以在其他地方调用
     this.simplemde = simplemde
     // 初始化标题和内容
-    this.fillContent()
+    //this.fillContent()
   },
   methods: {
     saveTitle() {
@@ -101,7 +101,7 @@ export default {
       const simplemde = this.simplemde
       const smde_title = ls.getItem('smde_title')
       // 如果 localStorage 有标题数据，使用它作为文章标题
-      /*     if (articleId !== undefined) {
+      if (articleId !== undefined) {
         const article = this.$store.getters.getArticleById(articleId)
         if (article) {
           const { title, content } = article
@@ -112,11 +112,11 @@ export default {
       } else {
         this.title = smde_title
         this.content = simplemde.value()
-      } */
-      if (null !== smde_title) {
+      }
+      /*   if (null !== smde_title) {
         this.title = smde_title
       }
-      this.content = simplemde.value()
+      this.content = simplemde.value() */
     },
     // 发布
     post() {
