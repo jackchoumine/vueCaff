@@ -71,3 +71,119 @@
    }
  }
  // export default post 和上面有何不同？？
+ // 参数 articleId 是文章 ID；isAdd 为 true 时点赞，为 false 时取消赞
+ export const like = ({
+   commit,
+   state
+ }, {
+   articleId,
+   isAdd
+ }) => {
+   // 仓库的文章
+   let articles = state.articles
+   // 点赞用户列表
+   let likeUsers = []
+   // 用户 ID，默认为 1
+   const uid = 1
+
+   if (!Array.isArray(articles)) articles = []
+
+   for (let article of articles) {
+     // 找到对应文章时
+     if (parseInt(article.articleId) === parseInt(articleId)) {
+       // 更新点赞用户列表
+       likeUsers = Array.isArray(article.likeUsers) ? article.likeUsers : likeUsers
+
+       if (isAdd) {
+         // 是否已赞 刚才点击的用户的 id 存在点赞列表中，说明点赞过了，不添加点赞；否则太添加点赞用户
+         const isAdded = likeUsers.some(likeUser => parseInt(likeUser.uid) === uid)
+         // 没有点赞过
+         if (!isAdded) {
+           // 在点赞用户列表中加入当前用户
+           likeUsers.push({
+             uid
+           })
+         }
+       } else {
+         for (let likeUser of likeUsers) {
+           // 找到对应点赞用户时
+           if (parseInt(likeUser.uid) === uid) {
+             // 删除点赞用户
+             likeUsers.splice(likeUsers.indexOf(likeUser), 1)
+             break
+           }
+         }
+       }
+
+       // 更新文章的点赞用户列表
+       article.likeUsers = likeUsers
+       break
+     }
+   }
+
+   // 提交 UPDATE_ARTICLES 以更新所有文章
+   commit('UPDATE_ARTICLES', articles)
+   // 返回点赞用户列表
+   return likeUsers
+ }
+
+ // 参数 articleId 是文章 ID；comment 是评论内容；commentId 是评论 ID
+ export const comment = ({
+   commit,
+   state
+ }, {
+   articleId,
+   comment,
+   commentId
+ }) => {
+   // 仓库的文章
+   let articles = state.articles
+   // 评论列表
+   let comments = []
+
+   if (!Array.isArray(articles)) articles = []
+
+   for (let article of articles) {
+     // 找到对应文章时
+     if (parseInt(article.articleId) === parseInt(articleId)) {
+       // 更新评论列表
+       comments = Array.isArray(article.comments) ? article.comments : comments
+
+       if (comment) {
+         // 获取用户传入的评论内容，设置用户 ID 的默认值为 1
+         const {
+           uid = 1, content
+         } = comment
+         const date = new Date()
+
+         if (commentId === undefined) {
+           const lastComment = comments[comments.length - 1]
+
+           // 新建 commentId
+           if (lastComment) {
+             commentId = parseInt(lastComment.commentId) + 1
+           } else {
+             commentId = comments.length + 1
+           }
+
+           // 在评论列表中加入当前评论
+           comments.push({
+             uid,
+             commentId,
+             content,
+             date
+           })
+         }
+       }
+
+       // 更新文章的评论列表
+       article.comments = comments
+       break
+     }
+   }
+
+   // 提交 UPDATE_ARTICLES 以更新所有文章
+   commit('UPDATE_ARTICLES', articles)
+   // 返回评论列表
+   return comments
+ }

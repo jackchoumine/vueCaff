@@ -16,6 +16,7 @@
     "moment": "2.22.2",
     "node-emoji": "1.8.1",
     "node-sass": "4.9.3",
+    "qrcode.vue": "1.6.0",
     "sass-loader": "7.1.0",
     "simplemde": "1.11.2",
     "sweetalert2": "7.26.11",

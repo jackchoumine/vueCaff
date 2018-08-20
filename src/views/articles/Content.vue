@@ -1,30 +1,116 @@
 <template>
-  <div class="blog-container" style="margin-top:20px">
-    <div class="blog-pages">
-      <div class="col-md-9 left-col pull-right">
-        <div class="panel article-body content-body">
-          <h1 class="text-center">{{ title }}</h1>
-          <div class="article-meta text-center">
-            <i class="fa fa-clock-o"></i>
-            <!-- 创建时间 -->
-            <abbr> {{date|moment('from')}}</abbr>
-          </div>
-          <div class="entry-content">
-            <div class="content-body entry-content panel-body ">
-              <div class="markdown-body" v-html="content"></div>
-              <!-- 编辑删除图标 用户登录 且 id 为 1 显示图标-->
-              <div v-if="auth && uid === 1" class="panel-footer operate">
-                <div class="actions">
-                  <a @click="deleteArticle" class="admin" href="javascript:;">
-                    <i class="fa fa-trash-o"></i>
-                  </a>
-                  <a @click="editArticle" class="admin" href="javascript:;">
-                    <i class="fa fa-pencil-square-o"></i>
-                  </a>
-                </div>
-              </div>
+  <!--  <div class="blog-container" style="margin-top:20px">
+    <div class="blog-pages"> -->
+  <div class="col-md-9 left-col pull-right">
+    <div class="panel article-body content-body">
+      <h1 class="text-center">{{ title }}</h1>
+      <div class="article-meta text-center">
+        <i class="fa fa-clock-o"></i>
+        <!-- 创建时间 -->
+        <abbr> {{date|moment('from')}}</abbr>
+      </div>
+      <div class="entry-content">
+        <div class="content-body entry-content panel-body ">
+          <div class="markdown-body" v-html="content"></div>
+          <!-- 编辑删除图标 用户登录 且 id 为 1 显示图标-->
+          <div v-if="auth && uid === 1" class="panel-footer operate">
+            <div class="actions">
+              <a @click="deleteArticle" class="admin" href="javascript:;">
+                <i class="fa fa-trash-o"></i>
+              </a>
+              <a @click="editArticle" class="admin" href="javascript:;">
+                <i class="fa fa-pencil-square-o"></i>
+              </a>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+    <!-- 在文章下面显示 点赞 -->
+    <div class="votes-container panel panel-default padding-md">
+      <div class="panel-body vote-box text-center">
+        <div class="btn-group">
+          <a @click="like" href="javascript:;" class="vote btn btn-primary popover-with-html" :class="likeClass">
+            <!-- 点赞图标 -->
+            <i class="fa fa-thumbs-up"></i> {{ likeClass ? '已赞' : '点赞' }}
+          </a>
+          <div class="or"></div>
+          <!-- showQrcode = true 内联语句，相当于事件处理函数 handler(){
+            this.showQrcode = true;
+          } -->
+          <button @click="showQrcode = true" class="btn btn-success">
+            <i class="fa fa-heart"></i> 打赏</button>
+        </div>
+        <div class="voted-users">
+          <div class="user-lists">
+            <span v-for="likeUser in likeUsers">
+              <!-- 点赞用户是当前用户时，加上类 animated 和 swing 以显示一个特别的动画  -->
+              <img :src="user && user.avatar" class="img-thumbnail avatar avatar-middle" :class="{ 'animated swing' : likeUser.uid === 1 }">
+            </span>
+          </div>
+          <!-- 没人点赞，显示这个 div todo 还没安装 animate.css 动画库 -->
+          <div v-if="!likeUsers.length" class="vote-hint">成为第一个点赞的人吧 ?</div>
+        </div>
+      </div>
+    </div>
+    <!-- 打赏弹窗 -->
+    <!-- .sync 对 show 进行双向绑定 -->
+    <Modal :show.sync="showQrcode" class="text-center">
+      <div v-if="user" slot="title">
+        <img :src="user.avatar" class="img-thumbnail avatar" width="48">
+      </div>
+      <div>
+        <p class="text-md">如果你想学习更多前端的知识，VuejsCaff.com 是个不错的开始</p>
+        <div class="payment-qrcode inline-block">
+          <h5>扫一扫打开 VuejsCaff.com</h5>
+          <p>
+            <!-- 动态二维码 -->
+            <qrcode-vue value="https://vuejscaff.com/" :size="160"></qrcode-vue>
+          </p>
+          <!-- 静态二维码 -->
+          <!-- <p><img src="https://vuejscaffcdn.phphub.org/uploads/images/201803/25/2/g3CFVs0h7B.jpeg?imageView2/2/w/1024/h/0" width="160"></p> -->
+        </div>
+      </div>
+      <div slot="footer">
+        <div class="text-center">祝你学习愉快 :)</div>
+      </div>
+    </Modal>
+    <!-- 评论列表 -->
+    <div class="replies panel panel-default list-panel replies-index">
+      <div class="panel-heading">
+        <div class="total">
+          回复数量:
+          <b>{{ comments.length }}</b>
+        </div>
+      </div>
+      <div class="panel-body">
+        <ul id="reply-list" class="list-group row">
+          <li v-for="(comment, index) in comments" :key="comment.commentId" class="list-group-item media">
+            <div class="avatar avatar-container pull-left">
+              <router-link :to="`/${comment.uname}`">
+                <img :src="comment.uavatar" class="media-object img-thumbnail avatar avatar-middle">
+              </router-link>
+            </div>
+            <div class="infos">
+              <div class="media-heading">
+                <router-link :to="`/${comment.uname}`" class="remove-padding-left author rm-link-color">
+                  {{ comment.uname }}
+                </router-link>
+                <div class="meta">
+                  <a :id="`reply${index + 1}`" :href="`#reply${index + 1}`" class="anchor">#{{ index + 1 }}</a>
+                  <span> ⋅ </span>
+                  <abbr class="timeago">
+                    {{ comment.date | moment('from', { startOf: 'second' }) }}
+                  </abbr>
+                </div>
+              </div>
+
+              <div class="preview media-body markdown-reply markdown-body" v-html="comment.content"></div>
+            </div>
+          </li>
+        </ul>
+        <div v-show="!comments.length" class="empty-block">
+          暂无评论~~
         </div>
       </div>
     </div>
@@ -37,14 +123,24 @@ import hljs from 'highlight.js'
 import emoji from 'node-emoji'
 // 引入 mapState 辅助函数
 import { mapState } from 'vuex'
+// 引入 qrcode.vue 的默认值
+import QrcodeVue from 'qrcode.vue'
 export default {
   name: 'Content',
+  components: {
+    QrcodeVue
+  },
   data() {
     return {
       title: '', // 文章标题
       content: '', // 文章内容
       date: '',
-      uid: 1
+      uid: 1,
+      likeUsers: [],
+      likeClass: '',
+      showQrcode: false, // 是否显示打赏弹窗
+      commentHtml: '', // 评论 HTML
+      comments: [] // 评论列表
     }
   },
   //   计算属性
@@ -59,7 +155,7 @@ export default {
     const article = this.$store.getters.getArticleById(articleId)
 
     if (article) {
-      let { uid, title, content, date } = article
+      let { uid, title, content, date, likeUsers, comments } = article
       this.uid = uid
       this.title = title
       //   用编辑器的 markdown 方法将 Markdown 内容转为 HTML
@@ -68,6 +164,12 @@ export default {
         emoji.emojify(content, name => name)
       )
       this.date = date
+      this.likeUsers = likeUsers || []
+      // 因为是一个对象数组，注意为何不用 indexOf 或者 includes
+      this.likeClass = this.likeUsers.some(likeUser => 1 === likeUser.uid)
+        ? 'active'
+        : ''
+      this.renderComments(comments)
       this.$nextTick(() => {
         //   遍历 当前实例下的 'pre code'元素
         this.$el.querySelectorAll('pre code').forEach(el => {
@@ -77,6 +179,49 @@ export default {
       })
     }
     this.articleId = articleId
+  },
+  mounted() {
+    // 已登录时，才开始创建
+    if (this.auth) {
+      // 自动高亮编辑器的内容
+      window.hljs = hljs
+
+      const simplemde = new SimpleMDE({
+        element: document.querySelector('#editor'),
+        placeholder:
+          '请使用 Markdown 格式书写 ;-)，代码片段黏贴时请注意使用高亮语法。',
+        spellChecker: false,
+        autoDownloadFontAwesome: false,
+        // 不显示工具栏
+        toolbar: false,
+        // 不显示状态栏
+        status: false,
+        renderingConfig: {
+          codeSyntaxHighlighting: true
+        }
+      })
+
+      // 内容改变监听
+      simplemde.codemirror.on('change', () => {
+        // 更新 commentMarkdown 为编辑器的内容
+        this.commentMarkdown = simplemde.value()
+        // 更新 commentHtml，我们先替换原内容中的 emoji 标识，然后使用 markdown 方法将内容转成 HTML
+        this.commentHtml = simplemde.markdown(
+          emoji.emojify(this.commentMarkdown, name => name)
+        )
+      })
+
+      // 按键松开监听
+      simplemde.codemirror.on('keyup', (codemirror, event) => {
+        // 使用 Ctrl+Enter 时提交评论
+        if (event.ctrlKey && event.keyCode === 13) {
+          this.comment()
+        }
+      })
+
+      // 将编辑器添加到当前实例
+      this.simplemde = simplemde
+    }
   },
   methods: {
     editArticle() {
@@ -93,6 +238,86 @@ export default {
           this.$store.dispatch('post', { articleId: this.articleId })
         }
       })
+    },
+    like(e) {
+      if (!this.auth) {
+        // 用户未登录，提醒登录
+        this.$swal({
+          text: '需要登录才能执行操作。',
+          confirmButtonText: '前往登录'
+        }).then(res => {
+          if (res.value) {
+            this.$route.push('/auth/login')
+          }
+        })
+      } else {
+        //用户已登录
+        console.log(e)
+        const target = e.currentTarget
+        // contains 不是新增 API 在哪定义的？
+        const active = target.classList.contains('active')
+        const articleId = this.articleId
+        // 包含点赞样式，说明点赞过了，就取消点赞
+        if (active) {
+          this.likeClass = ''
+          this.$store.dispatch('like', { articleId }).then(likeUsers => {
+            this.likeUsers = likeUsers
+          })
+        } else {
+          // 添加已点赞样式
+          this.likeClass = 'active animated rubberBand'
+          // 分发 like 事件，传入 isAdd 参数点赞，更新实例的 likeUers 为返回值
+          // like 点赞事件 返回 likeUsers
+          this.$store
+            .dispatch('like', { articleId, isAdd: true })
+            .then(likeUsers => {
+              this.likeUsers = likeUsers
+            })
+        }
+      }
+    },
+    //提交评论
+    comment() {
+      // 编辑器的内容不为空时
+      if (this.commentMarkdown && this.commentMarkdown.trim() !== '') {
+        // 分发 comment 事件以提交评论
+        this.$store
+          .dispatch('comment', {
+            comment: { content: this.commentMarkdown },
+            articleId: this.articleId
+          })
+          .then(comments => {
+            // 在浏览器的控制台打印返回的评论列表
+            console.log(comments)
+          })
+
+        // 清空编辑器
+        this.simplemde.value('')
+        // 使回复按钮获得焦点
+        document.querySelector('#reply-btn').focus()
+      }
+    },
+    // 渲染评论
+    renderComments(comments) {
+      if (Array.isArray(comments)) {
+        // 深拷贝 comments 以不影响其原值
+        const newComments = comments.map(comment => ({ ...comment }))
+        const user = this.user || {}
+
+        for (let comment of newComments) {
+          comment.uname = user.name
+          comment.uavatar = user.avatar
+          // 将评论内容从 Markdown 转成 HTML
+          comment.content = SimpleMDE.prototype.markdown(
+            emoji.emojify(comment.content, name => name)
+          )
+        }
+
+        // 更新实例的 comments
+        this.comments = newComments
+        // 将 Markdown 格式的评论添加到当前实例
+        this.commentsMarkdown = comments
+      }
     }
   }
 }
