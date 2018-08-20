@@ -76,14 +76,31 @@ const routes = [{
   {
     path: '/articles/:articleId/content',
     name: 'Content',
-    component: () => import('@/views/articles/Content.vue')
+    component: () =>
+      import ('@/views/articles/Content.vue')
   },
-   // 编辑文章
-   {
+  // 编辑文章
+  {
     path: '/articles/:articleId/edit',
     name: 'Edit',
-    component: () => import('@/views/articles/Create'),
-    meta: { auth: true }
+    component: () =>
+      import ('@/views/articles/Create'),
+    meta: {
+      auth: true
+    }
+  },
+  // 个人专栏
+  {
+    path: '/:user',
+    name: 'Column',
+    component: () =>
+      import ('@/views/articles/Column'),
+    children: [{
+      path: '',//点击父级路由，子路由也会渲染，List 组件在 Column 中渲染
+      name: 'Column',
+      component: () =>
+        import ('@/views/articles/List')
+    }]
   },
 ]
 export default routes

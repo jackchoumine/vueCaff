@@ -2,6 +2,7 @@
   <div id="wrap">
     <the-header></the-header>
     <div id="main-container" class="container main-container">
+      <!-- 入口组件中的连接页面在此渲染 -->
       <router-view/>
     </div>
     <the-footer></the-footer>
