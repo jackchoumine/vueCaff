@@ -11,11 +11,13 @@
                 <div class="panel-body" data-validator-form>
                     <div class="form-group">
                         <label class="control-label">用户名</label>
-                        <input v-model.trim="username" v-validator.required="{ title: '用户名' }" type="text" class="form-control" placeholder="请填写用户名">
+                        <input v-model.trim="username" v-validator.required="{ title: '用户名' }" type="text" class="form-control"
+                            placeholder="请填写用户名">
                     </div>
                     <div class="form-group">
                         <label class="control-label">密码</label>
-                        <input v-model.trim="password" id="password" v-validator.required="{ title: '密码' }" type="password" class="form-control" placeholder="请填写密码">
+                        <input v-model.trim="password" id="password" v-validator.required="{ title: '密码' }" type="password"
+                            class="form-control" placeholder="请填写密码">
                     </div>
                     <br>
                     <button @click="login" type="submit" class="btn btn-lg btn-success btn-block">
@@ -28,57 +30,57 @@
 </template>
 
 <script>
-export default {
-  name: 'Login',
-  data() {
-    return {
-      username: '', // 用户名
-      password: '', // 密码
-      msg: '', // 消息
-      msgType: '', // 消息类型
-      msgShow: false // 是否显示消息，默认不显示
-    }
-  },
-  methods: {
-    login(e) {
-      this.$nextTick(() => {
-        const target =
-          e.target.type === 'submit' ? e.target : e.target.parentElement
+    export default {
+        name: 'Login',
+        data() {
+            return {
+                username: '', // 用户名
+                password: '', // 密码
+                msg: '', // 消息
+                msgType: '', // 消息类型
+                msgShow: false // 是否显示消息，默认不显示
+            }
+        },
+        methods: {
+            login(e) {
+                this.$nextTick(() => {
+                    const target =
+                        e.target.type === 'submit' ? e.target : e.target.parentElement
 
-        if (target.canSubmit) {
-          this.submit()
+                    if (target.canSubmit) {
+                        this.submit()
+                    }
+                })
+            },
+            submit() {
+                const user = {
+                    name: this.username,
+                    password: this.password
+                }
+                const localUser = this.$store.state.user
+
+                if (localUser) {
+                    if (
+                        localUser.name !== user.name ||
+                        localUser.password !== user.password
+                    )
+                    this.showMsg('用户名或密码不正确')
+                    else this.$store.dispatch('login')
+                } else {
+                    this.showMsg('不存在该用户')
+                }
+            },
+            showMsg(msg, type = 'warning') {
+                this.msg = msg
+                this.msgType = type
+                this.msgShow = false
+
+                this.$nextTick(() => {
+                    this.msgShow = true
+                })
+            }
         }
-      })
-    },
-    submit() {
-      const user = {
-        name: this.username,
-        password: this.password
-      }
-      const localUser = this.$store.state.user
-
-      if (localUser) {
-        if (
-          localUser.name !== user.name ||
-          localUser.password !== user.password
-        )
-          this.showMsg('用户名或密码不正确')
-        else this.$store.dispatch('login')
-      } else {
-        this.showMsg('不存在该用户')
-      }
-    },
-    showMsg(msg, type = 'warning') {
-      this.msg = msg
-      this.msgType = type
-      this.msgShow = false
-
-      this.$nextTick(() => {
-        this.msgShow = true
-      })
     }
-  }
-}
 </script>
 
 <style scoped>
