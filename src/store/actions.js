@@ -186,10 +186,10 @@ const comment = ({
 
     for (let article of articles) {
         // 找到对应文章时
-        if (parseInt(article.articleId) === parseInt(articleId) && comment) {
+        if (parseInt(article.articleId) === parseInt(articleId) ) {
             // 获取文章评论
             comments = Array.isArray(article.comments) ? article.comments : comments
-
+            if (comment) {
             // 获取用户传入的评论内容，设置用户 ID 的默认值为 1
             const {
                 uid = 1, content
@@ -225,6 +225,14 @@ const comment = ({
                 } */
                 //好更好的写法
                 comments.find((ele)=>parseInt(ele.commentId)===parseInt(commentId)).content=content
+            }} else {
+                //不存在评论内容
+               let index = comments.findIndex(ele=>parseInt(ele.commentId)===parseInt(commentId));
+               if(index!==-1){
+                   comments.splice(index,1);
+               }else{
+                console.log('评论不存在');
+               }
             }
 
             // 更新文章的评论列表

@@ -158,7 +158,7 @@
                     </a>
                     <span>·</span>
                     <a href="javascript:;">
-                      <i class="fa fa-trash-o"></i>
+                      <i class="fa fa-trash-o" @click="deleteComment(comment.commentId)"></i>
                     </a>
                   </span>
                 </span>
@@ -363,7 +363,7 @@ export default {
           .then(comments => {
             // TODO:在事件分发的then里获取事件的返回值 需要深入理解
             // 在浏览器的控制台打印返回的评论列表
-            console.log('分发`comment`事件回调,打印文章评论',comments);
+            console.log("分发`comment`事件回调,打印文章评论", comments);
             //在回调里渲染评论
             this.renderComments(comments);
           });
@@ -372,7 +372,7 @@ export default {
           this.cancelEditComment();
         } else {
           // 清空编辑器
-          this.simplemde.value('');
+          this.simplemde.value("");
           // 使回复按钮获得焦点
           document.querySelector("#reply-btn").focus();
           // 将最后的评论滚动到页面顶部
@@ -425,6 +425,25 @@ export default {
         if (currentComment) {
           currentComment.scrollIntoView(true);
           currentComment.querySelector(".operate a").focus();
+        }
+      });
+    },
+    //删除评论
+    deleteComment(commentId) {
+      this.$swal({
+        text: "你确定要删除此评论吗？",
+        confirmButtonText: "删除"
+      }).then(res => {
+        if (res.value) {
+          //此时不用传入 comment，根据 commentId 删除评论
+          console.log("删除评论");
+          this.$store
+            .dispatch("comment", {
+              commentId,
+              articleId: this.articleId
+            })
+            .then(this.renderComments);
+          this.cancelEditComment();
         }
       });
     },
