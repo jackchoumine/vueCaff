@@ -195,7 +195,7 @@ const comment = ({
                 uid = 1, content
             } = comment
             const date = new Date()
-
+            //  没commentId 说明是新增的评论
             if (commentId === undefined) {
                 const lastComment = comments[comments.length - 1]
 
@@ -213,6 +213,18 @@ const comment = ({
                     content,
                     date
                 })
+            }else{
+                // commentId 不为 undefined 时，是对已有评论进行操作
+                /* for (let comment of comments) {
+                    // 对到对应的评论
+                    if(parseInt(comment.commentId)===parseInt(commentId)){
+                    //  更新评论内容
+                    comment.content=content
+                    break;
+                    }
+                } */
+                //好更好的写法
+                comments.find((ele)=>parseInt(ele.commentId)===parseInt(commentId)).content=content
             }
 
             // 更新文章的评论列表

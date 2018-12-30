@@ -27,7 +27,7 @@ const routes = [{
   // EditUsers
   {
     path: '/users/1/edit',
-    name: 'EditUsers',
+    // name: 'EditUsers', //有子路由，跳转到该路由，会渲染第一个子路由，不为父级路径提供名字
     component: () =>
       import ('@/views/users/Edit.vue'),
     children: [{
@@ -65,7 +65,7 @@ const routes = [{
   // 创作页面
   {
     path: '/articles/create',
-    name: 'EditPassword',
+    name: 'CreateArticle',
     component: () =>
       import ('@/views/articles/Create'),
     meta: {
@@ -92,7 +92,7 @@ const routes = [{
   // 个人专栏
   {
     path: '/:user',
-    name: 'Column',
+    // name: 'Column',
     component: () =>
       import ('@/views/articles/Column'),
     children: [{
