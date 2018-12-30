@@ -12,7 +12,7 @@
 
                 <ul class="list-group">
                     <!-- 使用 v-for 指令渲染文章列表 -->
-                    <li v-for="article in articles" :key="index" class="list-group-item">
+                    <li v-for="(article) in articles" :key="article.articleId" class="list-group-item">
                         <img v-if="user" :src="user.avatar" class="avatar avatar-small">
                         <!-- 点击文章的标题，前往文章页面显示文章 -->
                         <router-link :to="`/articles/${article.articleId}/content`" class="title">
@@ -29,16 +29,16 @@
 </template>
 
 <script>
-// 引入 mapState 辅助函数
-import { mapState } from 'vuex'
+    // 引入 mapState 辅助函数
+    import { mapState } from 'vuex'
 
-export default {
-  name: 'List',
-  computed: {
-    // 将指定的状态混入计算属性
-    ...mapState(['auth', 'user', 'articles'])
-  }
-}
+    export default {
+        name: 'List',
+        computed: {
+            // 将指定的状态混入计算属性
+            ...mapState(['auth', 'user', 'articles'])
+        }
+    }
 </script>
 
 <style scoped>

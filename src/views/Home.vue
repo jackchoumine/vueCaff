@@ -1,7 +1,9 @@
 <template>
     <div>
         <Message :show.sync="msgShow" :type="msgType" :msg="msg" />
-        <div class="col-md-9 topis-index main-col">
+        <!-- 帖子列表 -->
+        <div class="col-md-9 topics-index main-col">
+            <!-- 文章过滤菜单 -->
             <div class="panel pane-default">
                 <div class="panel-heading">
                     <ul class="list-inline topic-filter">
@@ -15,6 +17,7 @@
                     <div class="clearfix"></div>
                 </div>
             </div>
+            <!-- 显示列表 -->
             <div class="panel-body remove-padding-horizontal">
                 <!-- 文章过滤菜单 -->
                 <ul class="list-group row topic-list">
@@ -24,16 +27,16 @@
                                 <span class="count_votes" title="投票数">{{article.likeUsers?article.likeUsers.length:0}}</span>
                                 <span class="count_seperator">/</span>
                                 <span class="count_of_replies" title="回复数">{{article.comments?article.comments.length:0}}</span>
-                                <span class="count_">|</span>
+                                <span class="count_seperator">|</span>
                                 <!-- TODO:moment怎么用？？ -->
-                                <abbr class="count_">{{article.date|moment('from')}}</abbr>
+                                <abbr class="timeago">{{article.date|moment('from')}}</abbr>
                             </div>
                         </router-link>
                         <!-- 显示用户头像 tag 属性，将该链接渲染成 div-->
-                        <router-link v-if="user" :to="`/${user.name}`" tag="div" class="avatar pull-left"><img src="user.avatar"
-                                alt="头像" class="media-objet img-thumbnail"></router-link>
+                        <router-link v-if="user" :to="`/${user.name}`" tag="div" class="avatar pull-left"><img :src="user.avatar"
+                                alt="头像" class="media-objet img-thumbnail avatar avatar-middle" /></router-link>
                         <router-link :to="`/articles/${article.articleId}/content`" tag="div" class="infos">
-                            <div class="media-heading">{{article.title}}</div>
+                            <div class="media-heading title">{{article.title}}</div>
                         </router-link>
                     </li>
                 </ul>
@@ -60,14 +63,16 @@
          * 可传递一个回调 给 next ,在回调中用 vm 访问路由实例
          */
 
-        /*   to 目标路由
+        /*   
+        to 目标路由
         from 离开的路由
         name：路由的名称，如 'Register'；
       path：路由的路径，如 '/auth/register'；
       params：路由参数对象，如 { id: "1" }；
       query：URL 查询参数对象，如 { page: "1" }；
       meta：元信息对象，如 { auth: true }；
-        next  */
+        next  
+        */
 
         beforeRouteEnter(to, from, next) {
             //  路由名称
