@@ -17,6 +17,7 @@ const routes = [{
   {
     path: '/',
     name: 'Home',
+    alias:'/topics',//路由别名，可是字符串或者数组，路径非访问，就是对首页的访问
     component: () =>
       import ('@/views/Home')
   },
