@@ -39,8 +39,8 @@ let mockArticles = (num=10)=>{
             articleId:nextArticleId+index,
             // 中文标题 10 到 20字
             title:Random.ctitle(10,20),
-            // 3 - 5 个中文段落
-            content:Random.cparagraph(3,5),
+            // 3 - 5 个中文句子
+            content:Random.cparagraph(3, 5),
             date:new Date(),//Long  Date
             likeUsers:[],
             comments:[],

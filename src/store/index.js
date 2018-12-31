@@ -2,9 +2,9 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import ls from '../utils/localStorage'
 import router from '../router'
-// 引入所有 actions.js 的所有导出
-import * as moreActions from "./actions";
-
+// 将所有导出放在 moreActions 里面  TODO:
+import * as moreActions from './actions'
+import * as moreGetters from './getters'
 Vue.use(Vuex)
 
 const state = {
@@ -87,17 +87,22 @@ const actions = {
 }
 const getters = {
     // 第一个参数是 state ,因为要传递 id,这返回一个函数
-    getArticleById: (state) => (id) => {
+    getArticleById: (state,getters) => (id) => {
         // 从仓库中获取所有文章
-        let articles = state.articles
+        // let articles = state.articles
+        // 用派生状态 computedArticles 作为所有文章
+        let articles = getters.computedArticles
         // 所有文章是一个数组
         if (Array.isArray(articles)) {
             let result = articles.filter(article => parseInt(id) == parseInt(article.articleId))
             return result.length ? result[0] : null
         } else {
-            return null;
+            return null
         }
-    }
+    },
+    // TODO:混入 getters 可理解为
+    // getters = Object.assign(getters,moreGetters)
+    ...moreGetters
 }
 //创建新的仓库实例
 const store = new Vuex.Store({

@@ -34,3 +34,5 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 
 - 在首页显示帖子列表
 - 用Mock.js 模拟数据
+
+问题：文章模拟的评论，不能修改。
