@@ -33,7 +33,7 @@
                             </div>
                         </router-link>
                         <!-- 显示用户头像 tag 属性，将该链接渲染成 div-->
-                        <router-link v-if="user" :to="`/${user.name}`" tag="div" class="avatar pull-left"><img :src="user.avatar"
+                        <router-link :to="`/${article.uname}`" tag="div" class="avatar pull-left"><img :src="article.uavatar"
                                 alt="头像" class="media-objet img-thumbnail avatar avatar-middle" /></router-link>
                         <router-link :to="`/articles/${article.articleId}/content`" tag="div" class="infos">
                             <div class="media-heading title">{{article.title}}</div>
@@ -114,7 +114,11 @@
         computed: {
             //otherComputed
             //  推荐这种写法 添加其他计算属性方便
-            ...mapState(['auth', 'user', 'articles'])
+            ...mapState(['auth', 'user']),
+            //用派生状态作为所有文章
+            articles(){
+                return this.$store.getters.computedArticles
+            }
         },
         watch: {
             auth(value) {

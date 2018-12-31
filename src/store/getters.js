@@ -33,6 +33,7 @@ export const computedArticles = (state) => {
 
             // 添加用户信息到文章
             if (article.uid === 1) {
+                //TODO:这里的使用技巧
                 addUserInfo.call(article, true)
             } else {
                 addUserInfo.call(article)

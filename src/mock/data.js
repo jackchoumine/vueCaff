@@ -73,6 +73,7 @@ let mockArticles = (num=10)=>{
         article.comments=comments
     })
     // 返回测试文章
+    console.dir(articles)
     return  articles;
 }
 /**
