@@ -32,7 +32,7 @@ const AddMockData = (() => {
     }
     if (isAddMockData) {
         // 合并用户数据和测试数据 ES6写法
-        store.commit('UPDATE_ARTICLES', [...userArticles, ...mockArticles(10)]);
+        store.commit('UPDATE_ARTICLES', [...userArticles, ...mockArticles(11)]);
         // ES5 写法
         // store.commit('UPDATE_ARTICLES', userArticles.concat(mockArticles(10)));
         //还可以这样 不推荐

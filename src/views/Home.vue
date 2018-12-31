@@ -45,6 +45,10 @@
                     </li>
                 </ul>
             </div>
+            <!-- 分页组件，是全局的，不需引入 -->
+            <div class="panel-footer text-right remove-padding-horizontal page-footer">
+                <Pagination :currentPage="currentPage" :total="total" :pageSize="pageSize" :onPageChange="changePage"></Pagination>
+            </div>
         </div>
     </div>
 </template>
@@ -70,7 +74,9 @@
                     { filter: 'vote', name: '投票', title: '点赞数排序' },
                     { filter: 'recent', name: '最近', title: '发布时间排序' },
                     { filter: 'noreply', name: '零回复', title: '无人问津的话题' },
-                ]
+                ],
+                total: 0,//文章总数
+                pageSize: 10,//每页条数
             }
         },
         /**
@@ -133,6 +139,10 @@
             //otherComputed
             //  推荐这种写法 添加其他计算属性方便
             ...mapState(['auth', 'user']),
+            // 当前页，从查询参数 page 返回
+            currentPage() {
+                return parseInt(this.$route.query.page) || 1
+            }
         },
         watch: {
             auth(value) {
@@ -154,8 +164,20 @@
                 this.msgShow = true
             },
             setDataByFilter(filter = 'default') {
+                const pageSize = this.pageSize
+                const currentPage = this.currentPage
+                // 过滤后的所有文章
+                const allArticles = this.$store.getters.getArticlesByFilter(filter)
                 this.filter = filter
-                this.articles = this.$store.getters.getArticlesByFilter(filter)
+                this.total = allArticles.length
+                //当前页的文章
+                this.articles = allArticles.slice(pageSize * (currentPage - 1), pageSize * currentPage)
+            },
+            // 回调,组件的当前页改变时调用
+            changePage(page) {
+                // TODO:重点理解  $router 和 $route 的区别
+                //在查询参数中混入 page ,并跳转到该地址
+                this.$router.push({ query: { ...this.$route.query, page } })
             }
         }
     }
