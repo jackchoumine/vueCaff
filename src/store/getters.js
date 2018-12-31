@@ -89,7 +89,7 @@ export const getArticlesByUid = (state, getters) => (uid, user) => {
               } */
             // 有用户名时遍历所有文章
             let article = articles.find(ele => ele.uname === user)
-            if (article.uid) uid = article.uid
+            if (article) {uid = article.uid}
         }
 
         // 使用指定 uid 过滤所有文章

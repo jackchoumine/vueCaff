@@ -92,9 +92,11 @@ const getters = {
         // let articles = state.articles
         // 用派生状态 computedArticles 作为所有文章
         let articles = getters.computedArticles
+        
         // 所有文章是一个数组
         if (Array.isArray(articles)) {
             let result = articles.filter(article => parseInt(id) == parseInt(article.articleId))
+            // console.log('result',result);
             return result.length ? result[0] : null
         } else {
             return null

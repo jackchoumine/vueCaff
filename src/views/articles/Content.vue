@@ -52,11 +52,13 @@
           <div class="user-lists">
             <span v-for="likeUser in likeUsers">
               <!-- 点赞用户是当前用户时，加上类 animated 和 swing 以显示一个特别的动画  -->
-              <img
+            <!--   <img
                 :src="user && user.avatar"
                 class="img-thumbnail avatar avatar-middle"
                 :class="{ 'animated swing' : likeUser.uid === 1 }"
-              >
+              > -->
+              <router-link :to="`/${likeUser.name}`" tag="img" :src='likeUser.uavatar' class="img-thumbnail avatar avatar-middle"
+              :class="{'animated swing': likeUser.uid === 1 }"></router-link>
             </span>
           </div>
           <!-- 没人点赞，显示这个 div todo 还没安装 animate.css 动画库 -->
@@ -333,7 +335,9 @@ export default {
         if (active) {
           this.likeClass = "";
           this.$store.dispatch("like", { articleId }).then(likeUsers => {
-            this.likeUsers = likeUsers;
+            // this.likeUsers = likeUsers;
+            //使用带用户信息的点赞用户
+            this.likeUsers=this.recompute('likeUsers')
           });
         } else {
           // 添加已点赞样式
@@ -343,7 +347,8 @@ export default {
           this.$store
             .dispatch("like", { articleId, isAdd: true })
             .then(likeUsers => {
-              this.likeUsers = likeUsers;
+              //使用带用户信息的点赞用户
+            this.likeUsers=this.recompute('likeUsers')
             });
         }
       }
@@ -450,13 +455,16 @@ export default {
     // 渲染评论
     renderComments(comments) {
       if (Array.isArray(comments)) {
-        // 深拷贝 comments 以不影响其原值
+        // 使用带用户信息的评论
+        comments=this.recompute('comments')
+        // TODO:深拷贝 comments 以不影响其原值(深拷贝实现的几种方法)
         const newComments = comments.map(comment => ({ ...comment }));
         const user = this.user || {};
 
         for (let comment of newComments) {
-          comment.uname = user.name;
-          comment.uavatar = user.avatar;
+            // comment里已有这两个值了
+        //   comment.uname = user.name;
+        //   comment.uavatar = user.avatar;
           // 将评论内容从 Markdown 转成 HTML
           comment.content = SimpleMDE.prototype.markdown(
             emoji.emojify(comment.content, name => name)
@@ -468,9 +476,21 @@ export default {
         // 将 Markdown 格式的评论添加到当前实例
         this.commentsMarkdown = comments;
       }
-    }
+    },
+    //返回带用户信息的文化在那个的某项属性
+    recompute(key){
+        const articleId=this.$route.params.articleId
+        //已包含用户信息了
+        const article=this.$store.getters.getArticleById(articleId)
+        let arr=undefined
+        if(article){
+            //当键为变量时，用方括号
+            arr=article[key]
+        }
+        return arr||[]
+    },
   }
-};
+}
 </script>
 
 <style scoped>

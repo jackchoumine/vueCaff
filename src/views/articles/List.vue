@@ -13,7 +13,7 @@
                 <ul class="list-group">
                     <!-- 使用 v-for 指令渲染文章列表 -->
                     <li v-for="(article) in articles" :key="article.articleId" class="list-group-item">
-                        <img v-if="user" :src="user.avatar" class="avatar avatar-small">
+                        <img :src="article.uavatar" class="avatar avatar-small">
                         <!-- 点击文章的标题，前往文章页面显示文章 -->
                         <router-link :to="`/articles/${article.articleId}/content`" class="title">
                             {{ article.title }}
@@ -34,9 +34,21 @@
 
     export default {
         name: 'List',
+        data() {
+            return {
+                articles: []//用户文章
+            }
+        },
         computed: {
             // 将指定的状态混入计算属性
-            ...mapState(['auth', 'user', 'articles'])
+            ...mapState(['auth', 'user'])
+        },
+        beforeRouteEnter(to, from, next) {
+            next(vm => {
+                //TODO: vm 是什么？
+                console.log('TODO:List.vue,vm===this?', vm === this)
+                vm.articles = vm.$store.getters.getArticlesByUid(null, to.params.user)
+            })
         }
     }
 </script>
