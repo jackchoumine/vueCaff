@@ -30,6 +30,25 @@
                 </div>
             </div>
         </div>
+        <!-- 最热文章 -->
+        <div class="panel panel-default corner-radius panel-active-users">
+            <div class="panel-heading text-center">
+                <h3 class="panel-title">
+                    最热文章
+                </h3>
+            </div>
+            <div class="panel-body">
+                <ul class="list">
+                    <li v-for="(article, index) in hotArticles" :key="index">
+                        <router-link :to="`/articles/${article.articleId}/content`">
+                            <!-- <span v-if="index===0">?</span> -->
+                            <span> {{index+1}}</span>
+                            {{article.title}}
+                        </router-link>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
 </template>
 <script>
@@ -55,7 +74,8 @@
                         link: 'https://laravel-china.org/topics/7657'
                     }
                 ],
-                activeUsers: []
+                activeUsers: [],
+                hotArticles: []
             }
         },
         //在实例创建完后
@@ -65,7 +85,13 @@
                 console.log('活跃用户', res.data);
             }).catch(err => {
                 console.error('/users/active 亲情活跃用户遇到错误', err)
-            })
+            }),
+                // 通过 axios 执行 POST 请求来返回七天内最热文章，可以传递 num 来指定返回条数
+                this.$http.post('/articles/hot', { num: 10 }).then((response) => {
+                    this.hotArticles = response.data
+                }).catch(err => {
+                    console.error('/articles/hot 获取最热文章出错', err);
+                })
         },
     }
 </script>

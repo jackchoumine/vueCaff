@@ -34,6 +34,31 @@ Mock.mock('/users/active', 'get', () => {
     activeUsers.slice(0, 8)
     return activeUsers
 })
+//拦截最热文章
+Mock.mock('/articles/hot', 'post', (options) => {
+    // 将评论最少的文章排在前面
+    let filteredArticles = store.getters.getArticlesByFilter('noreply')
+    // 将评论最多的文章排在前面
+    let articles = filteredArticles.reverse()
+    // 取 7 天内评论最多的文章
+    let hotArticles = articles.filter((article) => (new Date() - new Date(article.date) < 3600 * 24 * 7 * 1000))
+    // 文章条数
+    let num =10 //默认 10 篇
+
+    // 请求有传 num 时使用它
+    if (options.body) {
+        try {
+            num = JSON.parse(options.body).num
+        } catch (e) { 
+            console.error('解析 post body 出错',e);
+        }
+    }
+
+    // 取前 num 条评论最多的文章，默认 10 条
+    hotArticles = hotArticles.slice(0, num)
+    console.log('拦截到最热文章请求',hotArticles);
+    return hotArticles
+})
 // 这里没有导出 用  import './mock' 引入和导出，然后引入有何区别
 /*
 TODO: Mock.mock(rurl,rtype,function(options))
