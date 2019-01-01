@@ -89,7 +89,7 @@ export const getArticlesByUid = (state, getters) => (uid, user) => {
               } */
             // 有用户名时遍历所有文章
             let article = articles.find(ele => ele.uname === user)
-            if (article) {uid = article.uid}
+            if (article) { uid = article.uid }
         }
 
         // 使用指定 uid 过滤所有文章
@@ -102,60 +102,88 @@ export const getArticlesByUid = (state, getters) => (uid, user) => {
 }
 // 返回使用 filter 参数过滤后的所有文章
 export const getArticlesByFilter = (state, getters) => (filter) => {
-  // 使用派生状态 computedArticles 作为所有文章
-  let articles = getters.computedArticles
-  let filteredArticles = []
+    // 使用派生状态 computedArticles 作为所有文章
+    let articles = getters.computedArticles
+    let filteredArticles = []
 
-  if (Array.isArray(articles)) {
-    // 深拷贝 articles 以不影响其原值
-    filteredArticles = articles.map(article => ({ ...article }))
+    if (Array.isArray(articles)) {
+        // 深拷贝 articles 以不影响其原值
+        filteredArticles = articles.map(article => ({ ...article }))
 
-    switch(filter) {
-      case 'excellent':
-        // 将当前用户的文章设置为精华文章
-        filteredArticles = getters.getArticlesByUid(1)
-        break
-      case 'vote':
-        // 将赞的最多的文章排在前面
-        filteredArticles.sort((a, b) => {
-          const alikeUsers = Array.isArray(a.likeUsers) ? a.likeUsers : []
-          const blikeUsers = Array.isArray(b.likeUsers) ? b.likeUsers : []
+        switch (filter) {
+            case 'excellent':
+                // 将当前用户的文章设置为精华文章
+                filteredArticles = getters.getArticlesByUid(1)
+                break
+            case 'vote':
+                // 将赞的最多的文章排在前面
+                filteredArticles.sort((a, b) => {
+                    const alikeUsers = Array.isArray(a.likeUsers) ? a.likeUsers : []
+                    const blikeUsers = Array.isArray(b.likeUsers) ? b.likeUsers : []
 
-          return blikeUsers.length - alikeUsers.length
-        })
-        break
-      case 'recent':
-        // 将最新写的文章排在前面
-        filteredArticles.reverse()
-        break
-      case 'noreply':
-        // 将评论最少的文章排在前面
-        filteredArticles.sort((a, b) => {
-          const aComments = Array.isArray(a.comments) ? a.comments : []
-          const bComments = Array.isArray(b.comments) ? b.comments : []
-          return aComments.length - bComments.length
-        })
-        break
-      default:
-        // 默认将回复时间最新的文章排在前面
-        filteredArticles.sort((a, b) => {
-          const aComments = Array.isArray(a.comments) ? a.comments : []
-          const bComments = Array.isArray(b.comments) ? b.comments : []
-          const aCommentsLength = aComments.length
-          const bCommentsLength = bComments.length
+                    return blikeUsers.length - alikeUsers.length
+                })
+                break
+            case 'recent':
+                // 将最新写的文章排在前面
+                filteredArticles.reverse()
+                break
+            case 'noreply':
+                // 将评论最少的文章排在前面
+                filteredArticles.sort((a, b) => {
+                    const aComments = Array.isArray(a.comments) ? a.comments : []
+                    const bComments = Array.isArray(b.comments) ? b.comments : []
+                    return aComments.length - bComments.length
+                })
+                break
+            default:
+                // 默认将回复时间最新的文章排在前面
+                filteredArticles.sort((a, b) => {
+                    const aComments = Array.isArray(a.comments) ? a.comments : []
+                    const bComments = Array.isArray(b.comments) ? b.comments : []
+                    const aCommentsLength = aComments.length
+                    const bCommentsLength = bComments.length
 
-          if (aCommentsLength > 0) {
-            if (bCommentsLength > 0) {
-              return new Date(bComments[bCommentsLength - 1].date) - new Date(aComments[aCommentsLength - 1].date)
-            } else {
-              return -1
-            }
-          } else {
-            return 1
-          }
-        })
-        break
+                    if (aCommentsLength > 0) {
+                        if (bCommentsLength > 0) {
+                            return new Date(bComments[bCommentsLength - 1].date) - new Date(aComments[aCommentsLength - 1].date)
+                        } else {
+                            return -1
+                        }
+                    } else {
+                        return 1
+                    }
+                })
+                break
+        }
     }
-  }
-  return filteredArticles
+    return filteredArticles
+}
+
+// 根据关键字 keyword 返回搜索结果
+export const getArticlesByKeyword = (state, getters) => (keyword) => {
+    let articles = getters.computedArticles
+    // 搜索结果
+    let results = []
+
+    if (Array.isArray(articles)) {
+        articles.forEach((article) => {
+            let { articleId, title, content } = article
+            // 该正则表示文章标题或内容中的关键字
+            const regex = new RegExp(`(${keyword})`, 'gi')
+
+            if (title.includes(keyword)|| content.indexOf(keyword) !== -1) {
+                // url 是文章中没有的数据，我们结合 articleId 拼出完整的路径
+                const url = `${state.origin}/articles/${articleId}/content`
+                // 给文章标题中的关键字加上高亮，$1 匹配第一个括号的内容
+                title = title.replace(regex, '<span class="highlight">$1</span>')
+                // 给文章内容中的关键字加上高亮，只取内容前 100 个字
+                content = content.substr(0, 100).replace(regex, '<span class="highlight">$1</span>')
+                // 等价于 results.push(Object.assign({}, article, { url: url, title: title, content: content })) 
+                results.push({ ...article, ...{ url, title, content } })
+            }
+        })
+    }
+
+    return results
 }

@@ -90,6 +90,11 @@ const routes = [{
       auth: true
     }
   },
+  {
+    path: '/search',
+    name: 'Search',
+    component: () => import('@/views/Search')
+  },
   // 个人专栏
   {
     path: '/:user',

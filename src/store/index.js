@@ -14,7 +14,9 @@ const state = {
     auth: ls.getItem('auth'),
     articles: ls.getItem('articles'),
     //搜索值
-    searchValue:''
+    searchValue: '',
+    // 默认为 location.origin
+    origin: location.origin
 }
 
 const mutations = {
@@ -37,8 +39,8 @@ const mutations = {
         ls.setItem('articles', articles)
     },
     //更新搜索值的事件类型
-    UPDATE_SEARCH_VALUE(state,searchValue){
-        state.searchValue=searchValue
+    UPDATE_SEARCH_VALUE(state, searchValue) {
+        state.searchValue = searchValue
     }
 }
 const actions = {
@@ -93,12 +95,12 @@ const actions = {
 }
 const getters = {
     // 第一个参数是 state ,因为要传递 id,这返回一个函数
-    getArticleById: (state,getters) => (id) => {
+    getArticleById: (state, getters) => (id) => {
         // 从仓库中获取所有文章
         // let articles = state.articles
         // 用派生状态 computedArticles 作为所有文章
         let articles = getters.computedArticles
-        
+
         // 所有文章是一个数组
         if (Array.isArray(articles)) {
             let result = articles.filter(article => parseInt(id) == parseInt(article.articleId))
