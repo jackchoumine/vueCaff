@@ -13,6 +13,8 @@ const state = {
     //   用户登录状态
     auth: ls.getItem('auth'),
     articles: ls.getItem('articles'),
+    //搜索值
+    searchValue:''
 }
 
 const mutations = {
@@ -33,6 +35,10 @@ const mutations = {
     UPDATE_ARTICLES(state, articles) {
         state.articles = articles;
         ls.setItem('articles', articles)
+    },
+    //更新搜索值的事件类型
+    UPDATE_SEARCH_VALUE(state,searchValue){
+        state.searchValue=searchValue
     }
 }
 const actions = {

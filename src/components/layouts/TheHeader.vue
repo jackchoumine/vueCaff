@@ -25,6 +25,7 @@
                 </ul>
                 <!-- 注册组件入口 -->
                 <div class="navbar-right">
+                    <SearchInput></SearchInput>
                     <TheEntry/>
                 </div>
             </div>
@@ -33,9 +34,10 @@
 </template>
 <script>
 import TheEntry from '@/components/layouts/TheEntry'
+import SearchInput from '@/components/layouts/SearchInput'
 export default {
   name: 'TheHeader',
-  components: { TheEntry },
+  components: { TheEntry ,SearchInput},
   data() {
     return {
       logo: {
