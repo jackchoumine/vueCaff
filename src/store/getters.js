@@ -161,7 +161,7 @@ export const getArticlesByFilter = (state, getters) => (filter) => {
 }
 
 // 根据关键字 keyword 返回搜索结果
-export const getArticlesByKeyword = (state, getters) => (keyword) => {
+export const getArticlesByKeyword = (state, getters) => (keyword, filter) => {
     let articles = getters.computedArticles
     // 搜索结果
     let results = []
@@ -172,7 +172,7 @@ export const getArticlesByKeyword = (state, getters) => (keyword) => {
             // 该正则表示文章标题或内容中的关键字
             const regex = new RegExp(`(${keyword})`, 'gi')
 
-            if (title.includes(keyword)|| content.indexOf(keyword) !== -1) {
+            if (title.includes(keyword) || content.indexOf(keyword) !== -1) {
                 // url 是文章中没有的数据，我们结合 articleId 拼出完整的路径
                 const url = `${state.origin}/articles/${articleId}/content`
                 // 给文章标题中的关键字加上高亮，$1 匹配第一个括号的内容
@@ -183,6 +183,21 @@ export const getArticlesByKeyword = (state, getters) => (keyword) => {
                 results.push({ ...article, ...{ url, title, content } })
             }
         })
+    }
+    // 评估排序方式
+    switch (filter) {
+        case 'vote':
+            results.sort((a, b) => {
+                const alikeUsers = Array.isArray(a.likeUsers) ? a.likeUsers : []
+                const blikeUsers = Array.isArray(b.likeUsers) ? b.likeUsers : []
+                return blikeUsers.length - alikeUsers.length
+            })
+            break;
+
+        default:
+            //默认将标题含有关键字的文章排在前面
+            results.sort((a, b) => a.title.indexOf(keyword) < b.title.indexOf(keyword))
+            break;
     }
 
     return results

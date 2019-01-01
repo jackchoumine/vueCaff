@@ -4,6 +4,14 @@
             <h3 class="panel-title">
                 <i class="fa fa-search"></i>
                 关于 “<span class="highlight">{{ keyword }}</span>” 的搜索结果, 共 {{ results.length }} 条
+                <!-- 排序方式列表 -->
+                <div class="pull-right" style="margin-top:-10px">
+                    <button v-for="(item, index) in filters" :key="index" :disabled="item.filter===filter" class="btn btn-default btn-sm"
+                        href="javscript:;" @click="getArticlesByKeyword(keyword,item.filter)">
+                        <i :class="`fa fa-${item.icon}`"></i>
+                        {{item.title}}
+                    </button>
+                </div>
             </h3>
         </div>
         <div class="panel-body">
@@ -46,7 +54,12 @@
         data() {
             return {
                 keyword: '', // 关键字
-                results: [] // 搜索结果
+                results: [], // 搜索结果
+                filter: 'default',
+                filters: [
+                    { filter: 'defalut', title: '相关性排序', icon: 'random' },
+                    { filter: 'vote', title: '按点赞数排序', icon: 'thumbs-up' },
+                ]
             }
         },
         beforeRouteEnter(to, from, next) {
@@ -73,12 +86,13 @@
         },
         methods: {
             // 使用关键字 keyword 获取搜索结果
-            getArticlesByKeyword(keyword) {
+            getArticlesByKeyword(keyword, filter) {
                 if (keyword) {
                     this.keyword = keyword
                     // 需要提交事件类型，以更新搜索框的值
+                    if (filter) this.filter = filter
                     this.$store.commit('UPDATE_SEARCH_VALUE', keyword)
-                    this.results = this.$store.getters.getArticlesByKeyword(keyword)
+                    this.results = this.$store.getters.getArticlesByKeyword(keyword, filter)
                 }
             }
         }
