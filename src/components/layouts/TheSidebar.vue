@@ -14,6 +14,22 @@
                 </Slider>
             </div>
         </div>
+        <!-- 活跃用户 -->
+        <div class="panel panel-default corner-radius panel-active-users">
+            <div class="panel-heading text-center">
+                <h3 class="panel-title">
+                    活跃用户
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="users-label">
+                    <router-link v-for="(user,index) in activeUsers" :key="index" :to="`/${user.name}`" class="users-label-item">
+                        <img :src="user.avatar" class="avatar-small inline-block">
+                        {{user.name}}
+                    </router-link>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 <script>
@@ -38,9 +54,19 @@
                         img: 'https://lccdn.phphub.org/uploads/banners/tEd4GxhMp6VMh9e0hrUH.jpg',
                         link: 'https://laravel-china.org/topics/7657'
                     }
-                ]
+                ],
+                activeUsers: []
             }
-        }
+        },
+        //在实例创建完后
+        created() {
+            this.$http.get('/users/active').then(res => {
+                this.activeUsers = res.data
+                console.log('活跃用户', res.data);
+            }).catch(err => {
+                console.error('/users/active 亲情活跃用户遇到错误', err)
+            })
+        },
     }
 </script>
 <style lang="css" scoped>

@@ -16,9 +16,13 @@ import Message from './plugins/message'
 import './filters'
 import { mockArticles } from "./mock/data";
 import ls from "./utils/localStorage";
+// 运行 ./mock/index.js TODO:和 import ... form ...有何区别
+import "./mock";
+import axios from "axios";
 Vue.use(Message)
 Vue.config.productionTip = false
-
+// 将 axios 添加到 Vue 原型上，在实例内部的所有组件可用
+Vue.prototype.$http = axios
 //执行匿名函数
 const AddMockData = (() => {
     // 是否加入测试数据

@@ -32,7 +32,7 @@
             //轮播延迟
             delay: {
                 type: Number,
-                default: 5000,
+                default: 8000,
             }
         },
         data() {
