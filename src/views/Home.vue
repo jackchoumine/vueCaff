@@ -50,14 +50,21 @@
                 <Pagination :currentPage="currentPage" :total="total" :pageSize="pageSize" :onPageChange="changePage"></Pagination>
             </div>
         </div>
+        <!-- 侧栏 -->
+        <TheSidebar></TheSidebar>
     </div>
 </template>
 
 <script>
     // 当一个组件需要获取多个状态的时候，引入 mapState 可以极大地简化写法。
     import { mapState } from "vuex";
+    import TheSidebar from "@/components/layouts/TheSidebar";
     export default {
         name: 'Home',
+        components: {
+            //局部注册组件
+            TheSidebar
+        },
         data() {
             return {
                 msg: '', // 消息

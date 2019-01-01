@@ -1,5 +1,5 @@
 <template>
-    <div v-if="slider.length" class="carousel slide" @mouseover="stop" @mouseout="play">
+    <div v-if="slides.length" class="carousel slide" @mouseover="stop" @mouseout="play">
         <div class="carousel-inner">
             <transition enter-active-class="animated slideInRight" leave-active-class="animated slideOutLeft">
                 <div v-if="show" key="current">
@@ -32,7 +32,7 @@
             //轮播延迟
             delay: {
                 type: Number,
-                default: 3000,
+                default: 5000,
             }
         },
         data() {
@@ -45,7 +45,7 @@
             play() {
                 if (this.autoplay) {
                     this.interval = setInterval(() => {
-                        this.playTo(this.next())
+                        this.playTo(this.nextIndex)
                     }, this.delay)
                 }
             },
@@ -67,7 +67,7 @@
                 return this.slides[this.currentIndex]
             },
             //下一项索引
-            netIndex() {
+            nextIndex() {
                 if (this.currentIndex === this.slides.length - 1) {
                     //当前项是最后一项
                     return 0
