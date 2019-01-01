@@ -30,8 +30,9 @@ Mock.mock('/users/active', 'get', () => {
     }
     //将发布评论最多的用户排在前面
     activeUsers.sort((a, b) => a.num - b.num)
-    // 取前 8 个发布评论 最多的用户
+    // 取前 8 个发布评论 最多的用户 TODO:这里不生效
     activeUsers.slice(0, 8)
+    console.log('活跃用户',activeUsers)
     return activeUsers
 })
 //拦截最热文章
