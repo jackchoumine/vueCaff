@@ -2,6 +2,12 @@
   "cSpell.words": [
     "mockjs",
     "portfinder",
-    "uglifyjs"
-  ]
+    "uglifyjs",
+    "xlink"
+  ],
+  "prettier.singleQuote": true,
+  "prettier.jsxSingleQuote": true,
+  "prettier.semi": false,
+  "prettier.useTabs": true,
+  "prettier.printWidth": 120
 }
