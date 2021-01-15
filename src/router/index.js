@@ -1,6 +1,10 @@
-/* 
-路由控制文件
-*/
+/*
+ * @Description: 路由控制
+ * @Date: 2021-01-16 00:49:21 +0800
+ * @Author: JackChou
+ * @LastEditTime: 2021-01-16 01:12:38 +0800
+ * @LastEditors: JackChou
+ */
 import Vue from 'vue'
 import Router from 'vue-router'
 //  引入路由定义
@@ -11,7 +15,7 @@ Vue.use(Router)
 // 新建路由实例
 const router = new Router({
   mode: 'history',
-  linkExactActiveClass: 'active', //为当前路由添加一个 acitve 类，表激活状态
+  linkExactActiveClass: 'active', //为当前路由添加一个 active 类，表激活状态
   routes,
   //指定滚动行为
   scrollBehavior(to, from, savedPosition) {
@@ -33,23 +37,24 @@ const router = new Router({
  */
 router.beforeEach((to, from, next) => {
   //获取仓库登录信息
-  const auth = router.app.$options.store.state.auth;
+  const auth = router.app.$options.store.state.auth
   const app = router.app
   const store = app.$options.store
   // 获取目标页面路由参数里的 articleId
   const articleId = to.params.articleId
-   // 当前用户
-   const user = store.state.user && store.state.user.name
-   // 路由参数中的用户
-   const paramUser = to.params.user
+  // 当前用户
+  const user = store.state.user && store.state.user.name
+  // 路由参数中的用户
+  const paramUser = to.params.user
 
   // 希望在导航到新页面前隐藏消息提示，
   // 只需在全局前置守卫里调用实例的 $message 的 hide 方法。
   app.$message.hide()
 
-  if (auth && to.path.includes('/auth/') ||
+  if (
+    (auth && to.path.includes('/auth/')) ||
     (!auth && to.meta.auth) ||
-    (articleId && !store.getters.getArticleById(articleId))||
+    (articleId && !store.getters.getArticleById(articleId)) ||
     // 路由参数中的用户不为当前用户，且找不到与其对应的文章时，跳转到首页  实际项目中根据用户是否注册来判断
     (paramUser && paramUser !== user && !store.getters.getArticlesByUid(null, paramUser).length)
   ) {

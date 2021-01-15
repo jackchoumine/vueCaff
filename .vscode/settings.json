@@ -8,6 +8,7 @@
   "prettier.singleQuote": true,
   "prettier.jsxSingleQuote": true,
   "prettier.semi": false,
-  "prettier.useTabs": true,
-  "prettier.printWidth": 120
+  "prettier.useTabs": false,
+  "prettier.printWidth": 120,
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
 }
