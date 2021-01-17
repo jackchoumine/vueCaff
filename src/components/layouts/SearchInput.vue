@@ -2,7 +2,7 @@
  * @Description: 搜索框
  * @Date: 2021-01-16 00:49:21 +0800
  * @Author: JackChou
- * @LastEditTime: 2021-01-17 18:58:25 +0800
+ * @LastEditTime: 2021-01-17 19:19:54 +0800
  * @LastEditors: JackChou
 -->
 <template>
@@ -31,7 +31,7 @@ export default {
     serach() {
       if (this.value !== '') {
         // 跳转到搜索结果页，附带查询参数 q 作为搜索值
-        this.$router.push({ name: 'Search', query: { q: value } })
+        this.$router.push({ name: 'Search', query: { q: this.value } })
       }
     },
     // 更新 searchValue
