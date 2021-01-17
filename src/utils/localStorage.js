@@ -1,4 +1,10 @@
-// 本地存储对象
+/*
+ * @Description: 本地存储
+ * @Date: 2021-01-16 00:49:21 +0800
+ * @Author: JackChou
+ * @LastEditTime: 2021-01-17 20:13:28 +0800
+ * @LastEditors: JackChou
+ */
 const ls = localStorage
 
 export default {
@@ -17,5 +23,5 @@ export default {
   //   移除本地保存的数据
   removeItem(name) {
     ls.removeItem(name)
-  }
+  },
 }
