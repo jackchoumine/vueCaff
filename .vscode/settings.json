@@ -1,9 +1,13 @@
 {
   "cSpell.words": [
+    "cparagraph",
+    "csentence",
+    "ctitle",
     "mockjs",
     "portfinder",
     "uavatar",
     "uglifyjs",
+    "unames",
     "xlink"
   ],
   "prettier.singleQuote": true,
