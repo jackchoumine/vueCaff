@@ -3,24 +3,22 @@
     <the-header></the-header>
     <div id="main-container" class="container main-container">
       <!-- 入口组件中的连接页面在此渲染 -->
-      <router-view/>
+      <router-view />
     </div>
     <the-footer></the-footer>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld'
 import TheHeader from './components/layouts/TheHeader'
 import TheFooter from './components/layouts/TheFooter'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld,
     TheHeader,
-    TheFooter
-  }
+    TheFooter,
+  },
 }
 </script>
 
@@ -55,13 +53,17 @@ div .editor-preview-side pre code[class*='lang-'] {
   color: rgb(206, 202, 202);
 } */
 
-html>body{
-  background-color:#f0f3f5;
+html > body {
+  background-color: #f0f3f5;
 }
 body > .container {
   margin-top: 15px;
 }
 
-div .editor-preview-side pre { background: #eee;}
-div .editor-preview-side pre code[class*="lang-"] { color: rgb(247, 247, 247);}
+div .editor-preview-side pre {
+  background: #eee;
+}
+div .editor-preview-side pre code[class*='lang-'] {
+  color: rgb(247, 247, 247);
+}
 </style>
