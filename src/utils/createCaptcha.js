@@ -1,4 +1,4 @@
-export default function (num = 6, letters = 'QWERTYUIOPLKJHGFDSAZXCVBNM1234567890') {
+export default function(num = 6, letters = 'QWERTYUIOPLKJHGFDSAZXCVBNM1234567890') {
   let tpl = ''
   let captcha = []
 
@@ -6,7 +6,7 @@ export default function (num = 6, letters = 'QWERTYUIOPLKJHGFDSAZXCVBNM123456789
     //   ... 扩展运算符
     captcha = [...Array(num)].map(() => letters[Math.floor(Math.random() * letters.length)])
   } catch (e) {
-      console.log(e)
+    console.log(e)
   }
 
   captcha.forEach(item => {
@@ -17,6 +17,6 @@ export default function (num = 6, letters = 'QWERTYUIOPLKJHGFDSAZXCVBNM123456789
 
   return {
     tpl,
-    captcha
+    captcha,
   }
 }

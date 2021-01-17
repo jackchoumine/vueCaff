@@ -1,3 +1,10 @@
+<!--
+ * @Description: 编辑用户信息
+ * @Date: 2021-01-16 00:49:21 +0800
+ * @Author: JackChou
+ * @LastEditTime: 2021-01-17 21:02:53 +0800
+ * @LastEditors: JackChou
+-->
 <template>
   <div class="users-show">
     <div class="col-md-3 main-col">
@@ -13,7 +20,7 @@
       </div>
     </div>
     <!-- 路由匹配时 在此渲染 -->
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
@@ -26,21 +33,21 @@ export default {
         {
           name: 'edit',
           title: '个人信息',
-          icon: 'list-alt'
+          icon: 'list-alt',
         },
         {
           name: 'edit_avatar',
           title: '修改头像',
-          icon: 'picture-o'
+          icon: 'picture-o',
         },
         {
           name: 'edit_password',
           title: '修改密码',
-          icon: 'lock'
-        }
-      ]
+          icon: 'lock',
+        },
+      ],
     }
-  }
+  },
 }
 </script>
 

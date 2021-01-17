@@ -1,3 +1,10 @@
+<!--
+ * @Description: 注册
+ * @Date: 2021-01-16 00:49:21 +0800
+ * @Author: JackChou
+ * @LastEditTime: 2021-01-17 21:04:15 +0800
+ * @LastEditors: JackChou
+-->
 <template>
   <div class="row">
     <div class="col-md-4 col-md-offset-4 floating-box">
@@ -10,25 +17,51 @@
         <div class="panel-body" data-validator-form>
           <div class="form-group">
             <label class="control-label">用户名</label>
-            <input v-model.trim="username" v-validator:input.required="{ regex: /^[a-zA-Z]+\w*\s?\w*$/, error: '用户名要求以字母开头的单词字符' }" type="text" class="form-control" placeholder="请填写用户名">
+            <input
+              v-model.trim="username"
+              v-validator:input.required="{ regex: /^[a-zA-Z]+\w*\s?\w*$/, error: '用户名要求以字母开头的单词字符' }"
+              type="text"
+              class="form-control"
+              placeholder="请填写用户名"
+            />
           </div>
           <div class="form-group">
             <label class="control-label">密码</label>
-            <input id="password" v-model.trim="password" v-validator.required="{ regex: /^\w{6,16}$/, error: '密码要求 6 ~ 16 个单词字符' }" type="text" class="form-control" placeholder="请填写密码">
+            <input
+              id="password"
+              v-model.trim="password"
+              v-validator.required="{ regex: /^\w{6,16}$/, error: '密码要求 6 ~ 16 个单词字符' }"
+              type="text"
+              class="form-control"
+              placeholder="请填写密码"
+            />
           </div>
           <div class="form-group">
             <label class="control-label">确认密码</label>
-            <input v-model.trim="cpassword" v-validator.required="{ target: '#password' }" type="text" class="form-control" placeholder="请填写确认密码">
+            <input
+              v-model.trim="cpassword"
+              v-validator.required="{ target: '#password' }"
+              type="text"
+              class="form-control"
+              placeholder="请填写确认密码"
+            />
           </div>
           <div class="form-group">
             <label class="control-label">图片验证码</label>
-            <input v-model.trim="captcha" v-validator.required="{ title: '图片验证码' }" type="text" class="form-control" placeholder="请填写验证码">
+            <input
+              v-model.trim="captcha"
+              v-validator.required="{ title: '图片验证码' }"
+              type="text"
+              class="form-control"
+              placeholder="请填写验证码"
+            />
           </div>
           <div class="thumbnail" title="点击图片重新获取验证码" @click="getCaptcha">
             <div class="captcha vcenter" v-html="captchaTpl"></div>
           </div>
           <button type="submit" class="btn btn-lg btn-success btn-block" @click="register">
-            <i class="fa fa-btn fa-sign-in"></i> 注册
+            <i class="fa fa-btn fa-sign-in"></i>
+            注册
           </button>
         </div>
       </div>
@@ -51,7 +84,7 @@ export default {
       captcha: '', // 验证码
       msg: '', // 消息
       msgType: '', // 消息类型
-      msgShow: false // 是否显示消息，默认不显示
+      msgShow: false, // 是否显示消息，默认不显示
     }
   },
   created() {
@@ -66,8 +99,7 @@ export default {
     },
     register(e) {
       this.$nextTick(() => {
-        const target =
-          e.target.type === 'submit' ? e.target : e.target.parentElement
+        const target = e.target.type === 'submit' ? e.target : e.target.parentElement
 
         if (target.canSubmit) {
           this.submit()
@@ -82,7 +114,7 @@ export default {
         const user = {
           name: this.username,
           password: this.password,
-          avatar: `https://api.adorable.io/avatars/200/${this.username}.png`
+          avatar: `https://api.adorable.io/avatars/200/${this.username}.png`,
         }
         // const localUser = ls.getItem('user')
         const localUser = this.$store.state.user //从仓库中获取信息
@@ -114,8 +146,8 @@ export default {
       this.$nextTick(() => {
         this.msgShow = true
       })
-    }
-  }
+    },
+  },
 }
 </script>
 

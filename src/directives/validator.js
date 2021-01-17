@@ -1,9 +1,15 @@
+/*
+ * @Description: 表单验证指令
+ * @Date: 2021-01-16 00:49:21 +0800
+ * @Author: JackChou
+ * @LastEditTime: 2021-01-17 21:14:31 +0800
+ * @LastEditors: JackChou
+ */
+// TODO 重点理解
 function validate(el, modifiers, bindingValue) {
   bindingValue = bindingValue && typeof bindingValue === 'object' ? bindingValue : {}
   const value = typeof el.value === 'string' ? el.value.trim() : ''
-  const {
-    title = '该项', error
-  } = bindingValue
+  const { title = '该项', error } = bindingValue
   let defaultError = ''
 
   if (modifiers.required && value === '') {
@@ -64,12 +70,8 @@ function getErrorElement(el) {
 }
 
 export default {
-  bind(el, binding, vnode) {
-    const {
-      value,
-      arg,
-      modifiers
-    } = binding
+  bind(el, binding, VNode) {
+    const { value, arg, modifiers } = binding
     const eventType = ['change', 'blur', 'input'].indexOf(arg) !== -1 ? arg : 'change'
     const defaultHandler = () => {
       showError(el)
@@ -87,11 +89,8 @@ export default {
       el.destroy = null
     }
   },
-  inserted(el, binding, vnode) {
-    const {
-      value,
-      modifiers
-    } = binding
+  inserted(el, binding, VNode) {
+    const { value, modifiers } = binding
     const form = el.closest('[data-validator-form]')
     const submitBtn = form ? form.querySelector('[type=submit]') : null
 
@@ -119,12 +118,12 @@ export default {
   unbind(el) {
     el.destroy()
     if (el.destroySubmitBtn) el.destroySubmitBtn()
-  }
+  },
 }
 /* 
 被绑定元素插入父节点时调用，该钩子保证了父节点的存在，因此可以在这里访问父节点 。
 {
-  inserted(el, binding, vnode) {},
+  inserted(el, binding, VNode) {},
 }
 <input v-validator:input.required="{ regex: /^[a-zA-Z]+\w*\s?\w*$/, error: '用户名要求以字母开头的单词字符' }">
 binding.name：指令名，不包括 v- 前缀，这里是 'validator' ；

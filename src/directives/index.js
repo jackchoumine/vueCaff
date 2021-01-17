@@ -1,3 +1,10 @@
+/*
+ * @Description: 指令
+ * @Date: 2021-01-16 00:49:21 +0800
+ * @Author: JackChou
+ * @LastEditTime: 2021-01-17 21:13:03 +0800
+ * @LastEditors: JackChou
+ */
 import Vue from 'vue'
 import validator from './validator'
 import dropdown from './dropdown'
@@ -8,17 +15,18 @@ import title from './title'
  *'validator'———— 指令名
  * validator ———— 指令对象
  */
-/* Vue.directive('validator', validator)
-Vue.directive('dropdown', dropdown) */
+/* 
+Vue.directive('validator', validator)
+Vue.directive('dropdown', dropdown) 
+*/
 
 //使用循环来注册指令
 const directives = {
-    validator,
-    dropdown,
-    // 添加 title 以便在循环中进行注册
-    title
+  validator,
+  dropdown,
+  title,
 }
 
 for (const [key, value] of Object.entries(directives)) {
-    Vue.directive(key, value)
+  Vue.directive(key, value)
 }

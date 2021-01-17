@@ -1,10 +1,17 @@
+/*
+ * @Description: 下拉指令
+ * @Date: 2021-01-16 00:49:21 +0800
+ * @Author: JackChou
+ * @LastEditTime: 2021-01-17 21:11:50 +0800
+ * @LastEditors: JackChou
+ */
 export default {
-  bind(el, binding, vnode) {
+  bind(el, binding, VNode) {
     const handler = () => {
       el.parentElement.classList.toggle('open')
     }
 
-    const documentHandler = (e) => {
+    const documentHandler = e => {
       const target = e.target
 
       if (target.isSameNode(el) || el.contains(target)) return
@@ -22,5 +29,5 @@ export default {
   },
   unbind(el) {
     el.destroy()
-  }
+  },
 }

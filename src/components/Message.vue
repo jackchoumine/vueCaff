@@ -1,10 +1,10 @@
 <template>
-    <div v-show="show" :class="`alert alert-${type} alert-dismissible`">
-        <button @click="close" type="button" class="close">
-            <span>×</span>
-        </button>
-        {{ msg }}
-    </div>
+  <div v-show="show" :class="`alert alert-${type} alert-dismissible`">
+    <button @click="close" type="button" class="close">
+      <span>×</span>
+    </button>
+    {{ msg }}
+  </div>
 </template>
 
 <script>
@@ -24,18 +24,18 @@ export default {
      */
     show: {
       type: Boolean,
-      default: false
+      default: false,
     },
     // 消息框的类型
     type: {
       type: String,
-      default: 'success'
+      default: 'success',
     },
     // 消息
     msg: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   watch: {
     show(value) {
@@ -45,13 +45,13 @@ export default {
           this.$el.scrollIntoView(true)
         })
       }
-    }
+    },
   },
   methods: {
     close() {
       this.$emit('update:show', false)
-    }
-  }
+    },
+  },
 }
 </script>
 

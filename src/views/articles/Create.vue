@@ -1,20 +1,33 @@
-<!-- 创作页面 -->
+<!--
+ * @Description: 创作页面 
+ * @Date: 2021-01-16 00:49:21 +0800
+ * @Author: JackChou
+ * @LastEditTime: 2021-01-17 21:05:34 +0800
+ * @LastEditors: JackChou
+-->
 <template>
   <div class="blog-container">
     <div class="blog-pages">
       <div class="col-md-12 panel">
         <div class="panel-body">
-          <h2 class="text-center">{{articleId?'编辑文章':'创作文章'}}</h2>
-          <hr>
+          <h2 class="text-center">{{ articleId ? '编辑文章' : '创作文章' }}</h2>
+          <hr />
           <div data-validator-form>
             <div class="form-group">
-              <input v-model.trim="title" @input="saveTitle" v-validator.required="{ title: '标题' }" type="text" class="form-control" placeholder="请填写标题">
+              <input
+                v-model.trim="title"
+                @input="saveTitle"
+                v-validator.required="{ title: '标题' }"
+                type="text"
+                class="form-control"
+                placeholder="请填写标题"
+              />
             </div>
             <div class="form-group">
               <!--  <textarea v-validator.required="{ title: '内容' }" class="form-control" placeholder="请使用 Markdown 格式书写 ;-)，代码片段黏贴时请注意使用高亮语法。"></textarea>-->
               <textarea id="editor"></textarea>
             </div>
-            <br>
+            <br />
             <div class="form-group">
               <button class="btn btn-primary" type="submit" @click="post">发 布</button>
             </div>
@@ -42,7 +55,7 @@ export default {
     return {
       title: '',
       content: '',
-      articleId: undefined
+      articleId: undefined,
     }
   },
   beforeRouteEnter(to, from, next) {
@@ -64,24 +77,23 @@ export default {
     $route(to) {
       this.clearData()
       this.setArticleId(to.params.articleId)
-    }
+    },
   },
   mounted() {
     const simplemde = new SimpleMDE({
       // 要绑定的 textarea 元素
       element: document.querySelector('#editor'),
-      placeholder:
-        '请使用 Markdown 格式书写 ;-)，代码片段黏贴时请注意使用高亮语法。代码高亮有点异常',
+      placeholder: '请使用 Markdown 格式书写 ;-)，代码片段黏贴时请注意使用高亮语法。代码高亮有点异常',
       spellChecker: false,
       autoDownloadFontAwesome: false,
       autosave: {
         enabled: true,
-        uniqueId: 'content'
+        uniqueId: 'content',
       },
       // 代码高亮
       renderingConfig: {
-        codeSyntaxHighlighting: true
-      }
+        codeSyntaxHighlighting: true,
+      },
     })
     // 监听编辑器的 change 事件
     simplemde.codemirror.on('change', () => {
@@ -126,7 +138,7 @@ export default {
       if (title !== '' && content.trim() !== '') {
         const article = {
           title,
-          content
+          content,
         }
         // 分发 post 事件
         this.$store.dispatch('post', { article })
@@ -148,8 +160,8 @@ export default {
       this.articleId = articleId
       this.fillContent(articleId)
       ls.setItem('articleId', articleId)
-    }
-  }
+    },
+  },
 }
 </script>
 
