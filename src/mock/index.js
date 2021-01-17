@@ -36,9 +36,9 @@ Mock.mock('/articles/hot', 'post', options => {
   // 将评论最多的文章排在前面
   const articles = filteredArticles.reverse()
   // 取 7 天内评论最多的文章
-  const hotArticles = articles.filter(article => new Date() - new Date(article.date) < 3600 * 24 * 7 * 1000)
+  let hotArticles = articles.filter(article => new Date() - new Date(article.date) < 3600 * 24 * 7 * 1000)
   // 文章条数
-  const num = 10 //默认 10 篇
+  let num = 10 //默认 10 篇
 
   // 请求有传 num 时使用它
   if (options.body) {
