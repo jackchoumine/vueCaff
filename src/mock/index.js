@@ -32,13 +32,13 @@ Mock.mock('/users/active', 'get', () => {
 //拦截最热文章
 Mock.mock('/articles/hot', 'post', options => {
   // 将评论最少的文章排在前面
-  let filteredArticles = store.getters.getArticlesByFilter('noreply')
+  const filteredArticles = store.getters.getArticlesByFilter('noreply')
   // 将评论最多的文章排在前面
-  let articles = filteredArticles.reverse()
+  const articles = filteredArticles.reverse()
   // 取 7 天内评论最多的文章
-  let hotArticles = articles.filter(article => new Date() - new Date(article.date) < 3600 * 24 * 7 * 1000)
+  const hotArticles = articles.filter(article => new Date() - new Date(article.date) < 3600 * 24 * 7 * 1000)
   // 文章条数
-  let num = 10 //默认 10 篇
+  const num = 10 //默认 10 篇
 
   // 请求有传 num 时使用它
   if (options.body) {
@@ -56,8 +56,8 @@ Mock.mock('/articles/hot', 'post', options => {
 })
 // 这里没有导出 用  import './mock' 引入和导出，然后引入有何区别
 /*
-TODO: Mock.mock(rurl,rtype,function(options))
-当拦截到匹配 rurl 和 rtype 的ajax 时，执行 function 函数
+TODO: Mock.mock(url,type,function(options))
+当拦截到匹配 url 和 type 的 ajax 时，执行 function 函数
 并不结果作为响应返回
 可通过 options.body 来访问相关参数
 */
