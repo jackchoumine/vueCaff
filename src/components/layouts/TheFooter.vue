@@ -1,3 +1,10 @@
+<!--
+ * @Description: 网站底部
+ * @Date: 2021-01-16 00:49:21 +0800
+ * @Author: JackChou
+ * @LastEditTime: 2021-01-17 19:07:32 +0800
+ * @LastEditors: JackChou
+-->
 <template>
   <!-- 网站底部 -->
   <footer class="footer">
@@ -73,7 +80,7 @@
 import title from '@/directives/title'
 export default {
   name: 'TheFooter',
-  //   自定义指令 局部注册，只能在 TheFooter 组件上可用
+  // 自定义指令 局部注册，只能在 TheFooter 组件上可用
   directives: {
     title,
   },
