@@ -1,7 +1,14 @@
+/*
+ * @Description: 弹出标题指令
+ * @Date: 2021-01-16 00:49:21 +0800
+ * @Author: JackChou
+ * @LastEditTime: 2021-01-17 19:55:38 +0800
+ * @LastEditors: JackChou
+ */
 /**
  * 弹出标题的函数
- * @param {DOM} el 
- * @param {String} title 
+ * @param {DOM} el
+ * @param {String} title
  */
 function showTitle(el, title) {
   const popover = getPopover()
@@ -32,7 +39,7 @@ function getPopover() {
 
   if (!popover) {
     const tpl = `
-        <div class="popover title-popover top fade in" style="position:fixed;">
+        <div class="popover title-popover top fade-in" style="position:fixed;">
           <div class="arrow"></div>
           <div class="popover-content"></div>
         </div>
@@ -53,13 +60,13 @@ export default {
    * 指令对象的钩子函数的额参数
    * el:指定所绑定的元素，可用来操作 DOM
    * binding:一个对象，binding.value 表示指令的绑定值
-   * vnode:Vue 编译生成的虚拟节点
-   * oldVnode:上一个虚拟节点，仅在 update 和componentUpdate 钩子函数中调用
+   * VNode:Vue 编译生成的虚拟节点
+   * oldVNode:上一个虚拟节点，仅在 update 和componentUpdate 钩子函数中调用
    */
-  bind(el, binding, vnode) {
+  bind(el, binding, VNode) {
     const events = ['mouseenter', 'mouseleave', 'click']
     // 事件处理函数
-    const handler = (event) => {
+    const handler = event => {
       if (event.type === 'mouseenter') {
         //   鼠标移入 显示标题
         showTitle(el, binding.value)
@@ -68,22 +75,22 @@ export default {
       }
     }
     // 在 el 元素上监听 event 事件
-    events.forEach((event) => {
+    events.forEach(event => {
       el.addEventListener(event, handler, false)
     })
 
     // 在 el 元素上添加一个属性，以在 其他钩子函数中访问
     el.destroy = () => {
       // 移除事件监听
-      events.forEach((event) => {
+      events.forEach(event => {
         el.removeEventListener(event, handler, false)
       })
-      //   移除 destory 属性
+      //   移除 destroy 属性
       el.destroy = null
     }
   },
   unbind(el) {
     //  移除事件监听和事件绑定
     el.destroy()
-  }
+  },
 }
