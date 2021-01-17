@@ -47,8 +47,7 @@ export default {
   beforeCreate() {
     //   实例初始化之后，数据观测之前被调用
     //   在 vue 实例创建之前，添加一个属性
-    this.uploadsUrl =
-      'https://vuejscaffcdn.phphub.org/uploads/images/201806/06/1/8UT35md5t9.png?imageView2/1/w/200/h/200'
+    this.uploadsUrl = 'https://laravel-china.org/uploads/images/201806/06/1/8UT35md5t9.png?imageView2/1/w/200/h/200'
   },
   methods: {
     changeNavIndex(index) {

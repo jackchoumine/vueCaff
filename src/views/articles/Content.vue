@@ -82,7 +82,7 @@
             <qrcode-vue value="https://vuejscaff.com/" :size="160"></qrcode-vue>
           </p>
           <!-- 静态二维码 -->
-          <!-- <p><img src="https://vuejscaffcdn.phphub.org/uploads/images/201803/25/2/g3CFVs0h7B.jpeg?imageView2/2/w/1024/h/0" width="160"></p> -->
+          <!-- <p><img src="https://laravel-china.org/uploads/images/201803/25/2/g3CFVs0h7B.jpeg?imageView2/2/w/1024/h/0" width="160"></p> -->
         </div>
       </div>
       <div slot="footer">
