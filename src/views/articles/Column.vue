@@ -58,8 +58,6 @@ export default {
             */
     // 基于 articles 返回文章数量
     articleNum() {
-      // console.log(this.articles.length); TODO:this.articles 为 null???
-
       return (this.articles && this.articles.length) || 0
     },
   },

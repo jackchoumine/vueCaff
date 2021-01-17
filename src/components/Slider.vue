@@ -2,7 +2,7 @@
  * @Description: 轮播
  * @Date: 2021-01-16 00:49:21 +0800
  * @Author: JackChou
- * @LastEditTime: 2021-01-17 21:09:51 +0800
+ * @LastEditTime: 2021-01-17 22:08:53 +0800
  * @LastEditors: JackChou
 -->
 <template>
@@ -89,7 +89,6 @@ export default {
     },
   },
   mounted() {
-    //TODO:注意这里的定时器的调用方式 为何不在created 函数里调用呢？
     if (this.autoplay) this.play()
   },
 }
@@ -124,11 +123,3 @@ export default {
   background-color: #f4665f;
 }
 </style>
-
-<!-- 
-    TODO:
-    ①知识： slot 的使用
-    作用域插槽
-    ②给 标签 加 key ,key可区分相同的标签，可正确渲染
-    ③ props 中的数组和对象的默认值，应该由一个工厂函数返回。TODO:工厂函数？
- -->

@@ -52,7 +52,6 @@ export default {
   },
   watch: {
     currentPage: {
-      // TODO:immediate 是什么作用
       immediate: true,
       handler(page) {
         // 更新组件内的当前页，为父组件上的 CurrentPage 的当前值

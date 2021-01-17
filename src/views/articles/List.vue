@@ -2,7 +2,7 @@
  * @Description: 文章列表
  * @Date: 2021-01-16 00:49:21 +0800
  * @Author: JackChou
- * @LastEditTime: 2021-01-17 21:05:04 +0800
+ * @LastEditTime: 2021-01-17 22:11:07 +0800
  * @LastEditors: JackChou
 -->
 <template>
@@ -52,8 +52,6 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
-      //TODO: vm 是什么？
-      console.log('TODO:List.vue,vm===this?', vm === this)
       vm.articles = vm.$store.getters.getArticlesByUid(null, to.params.user)
     })
   },
