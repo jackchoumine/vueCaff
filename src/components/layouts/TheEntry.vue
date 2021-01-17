@@ -1,4 +1,10 @@
-<!-- 个人入口菜单 -->
+<!--
+ * @Description: 个人中心入口、登录、注册
+ * @Date: 2021-01-16 00:49:21 +0800
+ * @Author: JackChou
+ * @LastEditTime: 2021-01-17 19:22:10 +0800
+ * @LastEditors: JackChou
+-->
 <template>
   <div class="navbar-right">
     <ul v-if="auth" class="nav navbar-nav github-login">

@@ -1,52 +1,47 @@
 <template>
-    <div class="navbar navbar-default topnav">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" @click="toggleNav">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-
-                <a href="/" class="navbar-brand">
-                    <img src="../../assets/8UT35md5t9.png" :alt="logo.title" />
-                    <!-- <span class="title">
-                        {{ logo.title }}
-                    </span> -->
-                </a>
-            </div>
-            <!-- { in: showCollapsedNav } -->
-            <div id="top-navbar-collapse" :class="['collapse', 'navbar-collapse',{'in':showCollapsedNav }]">
-                <ul class="nav navbar-nav">
-                    <li v-for="(item,index) in navList" :key="index" :class="{ active: index === activeNavIndex }">
-                        <a href="#" @click="changeNavIndex(index)">{{ item }}</a>
-                    </li>
-                </ul>
-                <!-- 注册组件入口 -->
-                <div class="navbar-right">
-                    <SearchInput></SearchInput>
-                    <TheEntry/>
-                </div>
-            </div>
+  <div class="navbar navbar-default topnav">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" @click="toggleNav">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a href="/" class="navbar-brand">
+          <img src="../../assets/8UT35md5t9.png" :alt="logo.title" />
+        </a>
+      </div>
+      <div id="top-navbar-collapse" :class="['collapse', 'navbar-collapse', { in: showCollapsedNav }]">
+        <ul class="nav navbar-nav">
+          <li v-for="(item, index) in navList" :key="index" :class="{ active: index === activeNavIndex }">
+            <a href="#" @click="changeNavIndex(index)">{{ item }}</a>
+          </li>
+        </ul>
+        <!-- 搜索、注册、登录、个人中心 -->
+        <div class="navbar-right">
+          <SearchInput></SearchInput>
+          <TheEntry />
         </div>
+      </div>
     </div>
+  </div>
 </template>
 <script>
 import TheEntry from '@/components/layouts/TheEntry'
 import SearchInput from '@/components/layouts/SearchInput'
 export default {
   name: 'TheHeader',
-  components: { TheEntry ,SearchInput},
+  components: { TheEntry, SearchInput },
   data() {
     return {
       logo: {
         src: `${this.uploadsUrl}site/ByvFbNlQYVwhvTyBgLdqitchoacDNznN.jpg`,
-        title: 'VuejsCaff'
+        title: 'VuejsCaff',
       },
       navList: ['社区', '头条', '问答', '教程'],
       activeNavIndex: 0,
-      showCollapsedNav: false
+      showCollapsedNav: false,
     }
   },
   beforeCreate() {
@@ -61,8 +56,8 @@ export default {
     },
     toggleNav() {
       this.showCollapsedNav = !this.showCollapsedNav
-    }
-  }
+    },
+  },
 }
 </script>
 <style scoped>
