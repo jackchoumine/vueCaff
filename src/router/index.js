@@ -2,12 +2,12 @@
  * @Description: 路由控制
  * @Date: 2021-01-16 00:49:21 +0800
  * @Author: JackChou
- * @LastEditTime: 2021-01-16 01:12:38 +0800
+ * @LastEditTime: 2021-01-17 17:15:56 +0800
  * @LastEditors: JackChou
  */
 import Vue from 'vue'
 import Router from 'vue-router'
-//  引入路由定义
+// 引入路由定义
 import routes from './routes'
 // 使用路由中间件
 Vue.use(Router)
@@ -15,7 +15,7 @@ Vue.use(Router)
 // 新建路由实例
 const router = new Router({
   mode: 'history',
-  linkExactActiveClass: 'active', //为当前路由添加一个 active 类，表激活状态
+  linkExactActiveClass: 'active', //激活的路径具有的类名
   routes,
   //指定滚动行为
   scrollBehavior(to, from, savedPosition) {
